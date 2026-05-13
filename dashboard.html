@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>首页 - 工作台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body { font-family: 'Microsoft YaHei', -apple-system, sans-serif; }
+    .stat-card { transition: all .2s; }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,.08); }
+    .quick-entry { transition: all .2s; cursor: pointer; }
+    .quick-entry:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,.08); }
+    .activity-item:last-child .activity-line { display: none; }
+    .progress-bar { transition: width .6s ease; }
+  </style>
+</head>
+<body class="bg-gray-50 p-6">
+  <!-- Welcome -->
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h2 class="text-lg font-semibold text-gray-800">👋 欢迎回来，管理员</h2>
+      <p class="text-xs text-gray-500 mt-0.5">今天是 2026 年 5 月 12 日 · 有 <span class="text-yellow-500 font-medium">3</span> 份合同待审查</p>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-4 gap-4 mb-6">
+    <div class="stat-card bg-white rounded-lg border border-gray-200 p-5">
+      <div class="flex items-center justify-between mb-3">
+        <span class="text-xs text-gray-400 font-medium">合同总数</span>
+        <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center">
+          <i class="fa-solid fa-file-lines"></i>
+        </div>
+      </div>
+      <p class="text-3xl font-bold text-gray-800">128</p>
+      <p class="text-xs text-green-500 mt-1"><i class="fa-solid fa-arrow-up mr-0.5"></i>较上月 +12.4%</p>
+    </div>
+    <div class="stat-card bg-white rounded-lg border border-gray-200 p-5">
+      <div class="flex items-center justify-between mb-3">
+        <span class="text-xs text-gray-400 font-medium">待审查</span>
+        <div class="w-10 h-10 rounded-lg bg-yellow-50 text-yellow-500 flex items-center justify-center">
+          <i class="fa-solid fa-clock"></i>
+        </div>
+      </div>
+      <p class="text-3xl font-bold text-gray-800">23</p>
+      <p class="text-xs text-yellow-500 mt-1"><i class="fa-regular fa-clock mr-0.5"></i>等待 AI 审查</p>
+    </div>
+    <div class="stat-card bg-white rounded-lg border border-gray-200 p-5">
+      <div class="flex items-center justify-between mb-3">
+        <span class="text-xs text-gray-400 font-medium">已完成</span>
+        <div class="w-10 h-10 rounded-lg bg-green-50 text-green-500 flex items-center justify-center">
+          <i class="fa-solid fa-check"></i>
+        </div>
+      </div>
+      <p class="text-3xl font-bold text-gray-800">89</p>
+      <p class="text-xs text-green-500 mt-1"><i class="fa-solid fa-arrow-up mr-0.5"></i>较上月 +8.2%</p>
+    </div>
+    <div class="stat-card bg-white rounded-lg border border-gray-200 p-5">
+      <div class="flex items-center justify-between mb-3">
+        <span class="text-xs text-gray-400 font-medium">有风险</span>
+        <div class="w-10 h-10 rounded-lg bg-red-50 text-red-500 flex items-center justify-center">
+          <i class="fa-solid fa-circle-exclamation"></i>
+        </div>
+      </div>
+      <p class="text-3xl font-bold text-gray-800">16</p>
+      <p class="text-xs text-red-500 mt-1"><i class="fa-solid fa-arrow-down mr-0.5"></i>较上月 -3.1%</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-3 gap-5 mb-6">
+    <!-- Quick Actions -->
+    <div class="col-span-2">
+      <h4 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+        <i class="fa-regular fa-bolt text-blue-500"></i>快捷入口
+      </h4>
+      <div class="grid grid-cols-3 gap-3">
+        <div class="quick-entry bg-white rounded-lg border border-gray-200 p-4 text-center" onclick="parent.location.href='upload-contract.html'">
+          <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center mx-auto mb-2.5 text-lg">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+          </div>
+          <p class="text-sm font-medium text-gray-700">上传合同</p>
+          <p class="text-[10px] text-gray-400 mt-0.5">支持 PDF/DOC</p>
+        </div>
+        <div class="quick-entry bg-white rounded-lg border border-gray-200 p-4 text-center" onclick="parent.location.href='contract-list.html'">
+          <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center mx-auto mb-2.5 text-lg">
+            <i class="fa-solid fa-list"></i>
+          </div>
+          <p class="text-sm font-medium text-gray-700">合同列表</p>
+          <p class="text-[10px] text-gray-400 mt-0.5">管理全部合同</p>
+        </div>
+        <div class="quick-entry bg-white rounded-lg border border-gray-200 p-4 text-center" onclick="parent.location.href='review-opinion.html'">
+          <div class="w-11 h-11 rounded-xl bg-purple-50 text-purple-500 flex items-center justify-center mx-auto mb-2.5 text-lg">
+            <i class="fa-solid fa-gavel"></i>
+          </div>
+          <p class="text-sm font-medium text-gray-700">审查意见</p>
+          <p class="text-[10px] text-gray-400 mt-0.5">查看审查结果</p>
+        </div>
+        <div class="quick-entry bg-white rounded-lg border border-gray-200 p-4 text-center" onclick="parent.location.href='rule-scoring.html'">
+          <div class="w-11 h-11 rounded-xl bg-yellow-50 text-yellow-500 flex items-center justify-center mx-auto mb-2.5 text-lg">
+            <i class="fa-solid fa-star"></i>
+          </div>
+          <p class="text-sm font-medium text-gray-700">评分规则</p>
+          <p class="text-[10px] text-gray-400 mt-0.5">配置评分标准</p>
+        </div>
+        <div class="quick-entry bg-white rounded-lg border border-gray-200 p-4 text-center" onclick="parent.location.href='knowledge-base.html'">
+          <div class="w-11 h-11 rounded-xl bg-cyan-50 text-cyan-500 flex items-center justify-center mx-auto mb-2.5 text-lg">
+            <i class="fa-solid fa-book"></i>
+          </div>
+          <p class="text-sm font-medium text-gray-700">知识库</p>
+          <p class="text-[10px] text-gray-400 mt-0.5">法规与条款模板</p>
+        </div>
+        <div class="quick-entry bg-white rounded-lg border border-gray-200 p-4 text-center" onclick="parent.location.href='history.html'">
+          <div class="w-11 h-11 rounded-xl bg-rose-50 text-rose-500 flex items-center justify-center mx-auto mb-2.5 text-lg">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+          </div>
+          <p class="text-sm font-medium text-gray-700">历史记录</p>
+          <p class="text-[10px] text-gray-400 mt-0.5">审查日志追踪</p>
+        </div>
+      </div>
+
+      <!-- Chart placeholder: Monthly overview -->
+      <h4 class="text-sm font-semibold text-gray-700 mt-6 mb-3 flex items-center gap-2">
+        <i class="fa-regular fa-chart-bar text-blue-500"></i>本月审查概览
+      </h4>
+      <div class="bg-white rounded-lg border border-gray-200 p-5">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-4 text-xs text-gray-500">
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-blue-400"></span>已审查</span>
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-yellow-400"></span>待审查</span>
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-red-400"></span>有风险</span>
+          </div>
+          <select class="border border-gray-200 rounded px-2 py-1 text-xs text-gray-500">
+            <option>本月</option>
+            <option>上月</option>
+            <option>本季度</option>
+          </select>
+        </div>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3">
+            <span class="text-xs text-gray-400 w-8 text-right">05/01</span>
+            <div class="flex-1 h-4 bg-gray-100 rounded-full overflow-hidden flex">
+              <div class="progress-bar h-full bg-blue-400" style="width:60%"></div>
+              <div class="progress-bar h-full bg-yellow-400" style="width:15%"></div>
+              <div class="progress-bar h-full bg-red-400" style="width:5%"></div>
+            </div>
+            <span class="text-xs text-gray-400 w-10 text-right">8 份</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs text-gray-400 w-8 text-right">05/03</span>
+            <div class="flex-1 h-4 bg-gray-100 rounded-full overflow-hidden flex">
+              <div class="progress-bar h-full bg-blue-400" style="width:70%"></div>
+              <div class="progress-bar h-full bg-yellow-400" style="width:10%"></div>
+              <div class="progress-bar h-full bg-red-400" style="width:0%"></div>
+            </div>
+            <span class="text-xs text-gray-400 w-10 text-right">12 份</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs text-gray-400 w-8 text-right">05/05</span>
+            <div class="flex-1 h-4 bg-gray-100 rounded-full overflow-hidden flex">
+              <div class="progress-bar h-full bg-blue-400" style="width:55%"></div>
+              <div class="progress-bar h-full bg-yellow-400" style="width:20%"></div>
+              <div class="progress-bar h-full bg-red-400" style="width:8%"></div>
+            </div>
+            <span class="text-xs text-gray-400 w-10 text-right">15 份</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs text-gray-400 w-8 text-right">05/07</span>
+            <div class="flex-1 h-4 bg-gray-100 rounded-full overflow-hidden flex">
+              <div class="progress-bar h-full bg-blue-400" style="width:72%"></div>
+              <div class="progress-bar h-full bg-yellow-400" style="width:8%"></div>
+              <div class="progress-bar h-full bg-red-400" style="width:2%"></div>
+            </div>
+            <span class="text-xs text-gray-400 w-10 text-right">18 份</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs text-gray-400 w-8 text-right">05/09</span>
+            <div class="flex-1 h-4 bg-gray-100 rounded-full overflow-hidden flex">
+              <div class="progress-bar h-full bg-blue-400" style="width:50%"></div>
+              <div class="progress-bar h-full bg-yellow-400" style="width:25%"></div>
+              <div class="progress-bar h-full bg-red-400" style="width:6%"></div>
+            </div>
+            <span class="text-xs text-gray-400 w-10 text-right">10 份</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs text-gray-400 w-8 text-right">05/11</span>
+            <div class="flex-1 h-4 bg-gray-100 rounded-full overflow-hidden flex">
+              <div class="progress-bar h-full bg-blue-400" style="width:65%"></div>
+              <div class="progress-bar h-full bg-yellow-400" style="width:12%"></div>
+              <div class="progress-bar h-full bg-red-400" style="width:4%"></div>
+            </div>
+            <span class="text-xs text-gray-400 w-10 text-right">14 份</span>
+          </div>
+        </div>
+        <div class="flex items-center justify-between mt-4 pt-3 border-t border-gray-100 text-xs text-gray-400">
+          <span>本月累计审查：<strong class="text-gray-700">256</strong> 份</span>
+          <span>平均评分：<strong class="text-gray-700">78.3</strong></span>
+          <span>发现问题：<strong class="text-red-500">43</strong> 项</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="space-y-5">
+      <!-- Review Queue -->
+      <div>
+        <h4 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+          <i class="fa-regular fa-clock text-blue-500"></i>审查队列
+        </h4>
+        <div class="bg-white rounded-lg border border-gray-200 divide-y divide-gray-100">
+          <div class="px-4 py-3">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm text-gray-700">设备采购框架协议</span>
+              <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded">审查中</span>
+            </div>
+            <div class="flex gap-0.5">
+              <div class="h-1.5 flex-1 rounded-sm bg-blue-400"></div>
+              <div class="h-1.5 flex-1 rounded-sm bg-blue-400"></div>
+              <div class="h-1.5 flex-1 rounded-sm bg-gray-200"></div>
+              <div class="h-1.5 flex-1 rounded-sm bg-gray-200"></div>
+            </div>
+          </div>
+          <div class="px-4 py-3">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm text-gray-700">办公楼租赁协议</span>
+              <span class="text-xs bg-yellow-50 text-yellow-600 px-2 py-0.5 rounded">待审查</span>
+            </div>
+            <div class="flex gap-0.5">
+              <div class="h-1.5 flex-1 rounded-sm bg-yellow-400"></div>
+              <div class="h-1.5 flex-1 rounded-sm bg-gray-200"></div>
+              <div class="h-1.5 flex-1 rounded-sm bg-gray-200"></div>
+              <div class="h-1.5 flex-1 rounded-sm bg-gray-200"></div>
+            </div>
+          </div>
+          <div class="px-4 py-3">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm text-gray-700">原材料年度采购合同</span>
+              <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded">审查中</span>
+            </div>
+            <div class="flex gap-0.5">
+              <div class="h-1.5 flex-1 rounded-sm bg-blue-400"></div>
+              <div class="h-1.5 flex-1 rounded-sm bg-blue-400"></div>
+              <div class="h-1.5 flex-1 rounded-sm bg-blue-400"></div>
+              <div class="h-1.5 flex-1 rounded-sm bg-gray-200"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pending tasks -->
+      <div>
+        <h4 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+          <i class="fa-regular fa-list-check text-blue-500"></i>待办事项
+        </h4>
+        <div class="bg-white rounded-lg border border-gray-200 divide-y divide-gray-100">
+          <div class="flex items-center gap-3 px-4 py-3">
+            <input type="checkbox" class="rounded border-gray-300">
+            <div class="flex-1 min-w-0">
+              <p class="text-sm text-gray-700 truncate">设备采购框架协议 — 人工复核</p>
+              <p class="text-[10px] text-red-400">高优先级</p>
+            </div>
+            <span class="text-[10px] text-gray-400">1小时前</span>
+          </div>
+          <div class="flex items-center gap-3 px-4 py-3">
+            <input type="checkbox" class="rounded border-gray-300">
+            <div class="flex-1 min-w-0">
+              <p class="text-sm text-gray-700 truncate">办公楼租赁协议 — 法务复核</p>
+              <p class="text-[10px] text-red-400">高优先级</p>
+            </div>
+            <span class="text-[10px] text-gray-400">3小时前</span>
+          </div>
+          <div class="flex items-center gap-3 px-4 py-3">
+            <input type="checkbox" class="rounded border-gray-300">
+            <div class="flex-1 min-w-0">
+              <p class="text-sm text-gray-700 truncate">IT运维服务合同 — 确认审查结果</p>
+              <p class="text-[10px] text-gray-400">普通</p>
+            </div>
+            <span class="text-[10px] text-gray-400">昨天</span>
+          </div>
+          <div class="flex items-center gap-3 px-4 py-3">
+            <input type="checkbox" class="rounded border-gray-300">
+            <div class="flex-1 min-w-0">
+              <p class="text-sm text-gray-700 truncate">更新评分规则 — 条款完整性权重</p>
+              <p class="text-[10px] text-gray-400">普通</p>
+            </div>
+            <span class="text-[10px] text-gray-400">昨天</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div>
+        <h4 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+          <i class="fa-regular fa-clock text-blue-500"></i>最近动态
+        </h4>
+        <div class="bg-white rounded-lg border border-gray-200 px-4 py-3">
+          <div class="space-y-0">
+            <div class="activity-item flex gap-3 pb-3 relative">
+              <div class="flex flex-col items-center">
+                <div class="w-2 h-2 rounded-full bg-green-500 mt-1.5"></div>
+                <div class="activity-line w-px flex-1 bg-gray-100 mt-1"></div>
+              </div>
+              <div class="flex-1">
+                <p class="text-xs text-gray-700">IT运维服务合同 <span class="text-gray-400">审查完成</span></p>
+                <p class="text-[10px] text-gray-400">评分 88 · 15:20</p>
+              </div>
+            </div>
+            <div class="activity-item flex gap-3 pb-3 relative">
+              <div class="flex flex-col items-center">
+                <div class="w-2 h-2 rounded-full bg-yellow-500 mt-1.5"></div>
+                <div class="activity-line w-px flex-1 bg-gray-100 mt-1"></div>
+              </div>
+              <div class="flex-1">
+                <p class="text-xs text-gray-700">新合同上传 <span class="text-blue-500">保密协议-v3.pdf</span></p>
+                <p class="text-[10px] text-gray-400">等待 AI 审查 · 13:45</p>
+              </div>
+            </div>
+            <div class="activity-item flex gap-3 pb-3 relative">
+              <div class="flex flex-col items-center">
+                <div class="w-2 h-2 rounded-full bg-red-500 mt-1.5"></div>
+                <div class="activity-line w-px flex-1 bg-gray-100 mt-1"></div>
+              </div>
+              <div class="flex-1">
+                <p class="text-xs text-gray-700">办公楼租赁协议 <span class="text-red-500">发现高风险</span></p>
+                <p class="text-[10px] text-gray-400">3项高风险问题 · 09:45</p>
+              </div>
+            </div>
+            <div class="activity-item flex gap-3 relative">
+              <div class="flex flex-col items-center">
+                <div class="w-2 h-2 rounded-full bg-blue-500 mt-1.5"></div>
+              </div>
+              <div class="flex-1">
+                <p class="text-xs text-gray-700">评分规则 <span class="text-gray-400">更新完成</span></p>
+                <p class="text-[10px] text-gray-400">权重配置已调整 · 昨天 16:00</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Tips -->
+      <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200 p-4">
+        <div class="flex gap-3">
+          <i class="fa-regular fa-lightbulb text-blue-500 text-lg mt-0.5"></i>
+          <div>
+            <p class="text-sm font-medium text-blue-800">使用提示</p>
+            <p class="text-xs text-blue-600 mt-1">合同上传后 AI 自动审查，平均耗时 3-5 分钟。建议上传 PDF 格式以获得最佳审查效果。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

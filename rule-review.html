@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>审查规则</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body { font-family: 'Microsoft YaHei', -apple-system, sans-serif; }
+    .rule-card { transition: all .2s; border-left: 3px solid transparent; }
+    .rule-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,.06); }
+  </style>
+</head>
+<body class="bg-gray-50 p-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h2 class="text-lg font-semibold text-gray-800">审查规则配置</h2>
+      <p class="text-xs text-gray-500 mt-0.5">配置合同的 AI 审查规则与处理策略</p>
+    </div>
+    <button onclick="document.getElementById('addRuleModal').classList.remove('hidden')" class="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-600 transition flex items-center gap-2">
+      <i class="fa-solid fa-plus"></i>新建规则
+    </button>
+  </div>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-4 gap-4 mb-6">
+    <div class="bg-blue-50 rounded-lg p-4 text-center" style="border:none">
+      <p class="text-3xl font-bold text-blue-600">6</p>
+      <p class="text-xs text-gray-500 mt-1">审查规则</p>
+    </div>
+    <div class="bg-green-50 rounded-lg p-4 text-center" style="border:none">
+      <p class="text-3xl font-bold text-green-600">4</p>
+      <p class="text-xs text-gray-500 mt-1">已启用</p>
+    </div>
+    <div class="bg-gray-100 rounded-lg p-4 text-center" style="border:none">
+      <p class="text-3xl font-bold text-gray-600">2</p>
+      <p class="text-xs text-gray-500 mt-1">未启用</p>
+    </div>
+  </div>
+
+  <!-- Rule Cards Grid -->
+  <div class="grid grid-cols-2 gap-4">
+    <div class="rule-card bg-white rounded-lg border border-gray-200 overflow-hidden" style="border-left-color: #1677ff">
+      <div class="px-5 py-4">
+        <div class="flex items-start justify-between mb-3">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center text-sm">
+              <i class="fa-solid fa-file-signature"></i>
+            </div>
+            <div>
+              <h4 class="text-sm font-semibold text-gray-800">价格条款审查</h4>
+              <p class="text-[10px] text-gray-400">审查价格条款的合理性、完整性</p>
+            </div>
+          </div>
+          <span class="text-[10px] bg-green-50 text-green-600 px-2 py-0.5 rounded-full font-medium">已启用</span>
+        </div>
+        <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="text-xs text-gray-400 hover:text-blue-500 mb-2 block">
+          <i class="fa-regular fa-circle-down mr-1"></i>查看详情
+        </button>
+        <div class="hidden text-sm text-gray-600 space-y-2 bg-gray-50 rounded-lg p-3">
+          <div><span class="text-xs text-gray-500 block">审查条件</span><span class="text-sm">价格构成是否明确，包含单价、数量、总价、税费等</span></div>
+          <div><span class="text-xs text-gray-500 block">触发策略</span><span class="text-sm">价格信息不完整或存在歧义时标记</span></div>
+          <div><span class="text-xs text-gray-500 block">处理方式</span><span class="text-sm">自动标记并提醒人工审核</span></div>
+        </div>
+        <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
+          <span class="text-[10px] text-gray-400"><i class="fa-regular fa-clock mr-1"></i>2026-05-10 更新</span>
+          <div class="flex gap-2">
+            <button class="text-xs text-gray-400 hover:text-blue-500"><i class="fa-regular fa-pen-to-square"></i></button>
+            <button class="text-xs text-gray-400 hover:text-red-500"><i class="fa-regular fa-trash-can"></i></button>
+            <label class="relative inline-flex items-center cursor-pointer ml-2">
+              <input type="checkbox" checked class="sr-only peer">
+              <div class="w-7 h-3.5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[1px] after:left-[1px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all"></div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule-card bg-white rounded-lg border border-gray-200 overflow-hidden" style="border-left-color: #ff4d4f">
+      <div class="px-5 py-4">
+        <div class="flex items-start justify-between mb-3">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-red-50 text-red-500 flex items-center justify-center text-sm">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div>
+              <h4 class="text-sm font-semibold text-gray-800">违约责任审查</h4>
+              <p class="text-[10px] text-gray-400">审查违约金比例、责任限制条款</p>
+            </div>
+          </div>
+          <span class="text-[10px] bg-green-50 text-green-600 px-2 py-0.5 rounded-full font-medium">已启用</span>
+        </div>
+        <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="text-xs text-gray-400 hover:text-blue-500 mb-2 block">
+          <i class="fa-regular fa-circle-down mr-1"></i>查看详情
+        </button>
+        <div class="hidden text-sm text-gray-600 space-y-2 bg-gray-50 rounded-lg p-3">
+          <div><span class="text-xs text-gray-500 block">审查条件</span><span class="text-sm">违约金是否超过法定上限（30%），责任限制是否合理</span></div>
+          <div><span class="text-xs text-gray-500 block">触发策略</span><span class="text-sm">违约金比例超过20%或责任免除条款存在时触发</span></div>
+          <div><span class="text-xs text-gray-500 block">处理方式</span><span class="text-sm">高风险标注，建议法务复核</span></div>
+        </div>
+        <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
+          <span class="text-[10px] text-gray-400"><i class="fa-regular fa-clock mr-1"></i>2026-05-09 更新</span>
+          <div class="flex gap-2">
+            <button class="text-xs text-gray-400 hover:text-blue-500"><i class="fa-regular fa-pen-to-square"></i></button>
+            <button class="text-xs text-gray-400 hover:text-red-500"><i class="fa-regular fa-trash-can"></i></button>
+            <label class="relative inline-flex items-center cursor-pointer ml-2">
+              <input type="checkbox" checked class="sr-only peer">
+              <div class="w-7 h-3.5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[1px] after:left-[1px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all"></div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule-card bg-white rounded-lg border border-gray-200 overflow-hidden" style="border-left-color: #722ed1">
+      <div class="px-5 py-4">
+        <div class="flex items-start justify-between mb-3">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-purple-50 text-purple-500 flex items-center justify-center text-sm">
+              <i class="fa-solid fa-gavel"></i>
+            </div>
+            <div>
+              <h4 class="text-sm font-semibold text-gray-800">争议解决条款审查</h4>
+              <p class="text-[10px] text-gray-400">审查管辖法院、仲裁条款的有效性</p>
+            </div>
+          </div>
+          <span class="text-[10px] bg-green-50 text-green-600 px-2 py-0.5 rounded-full font-medium">已启用</span>
+        </div>
+        <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="text-xs text-gray-400 hover:text-blue-500 mb-2 block">
+          <i class="fa-regular fa-circle-down mr-1"></i>查看详情
+        </button>
+        <div class="hidden text-sm text-gray-600 space-y-2 bg-gray-50 rounded-lg p-3">
+          <div><span class="text-xs text-gray-500 block">审查条件</span><span class="text-sm">管辖法院约定是否明确，仲裁条款是否符合法律要求</span></div>
+          <div><span class="text-xs text-gray-500 block">触发策略</span><span class="text-sm">管辖约定不明确、或对己方不利时触发</span></div>
+          <div><span class="text-xs text-gray-500 block">处理方式</span><span class="text-sm">标记并提供修改建议</span></div>
+        </div>
+        <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
+          <span class="text-[10px] text-gray-400"><i class="fa-regular fa-clock mr-1"></i>2026-05-08 更新</span>
+          <div class="flex gap-2">
+            <button class="text-xs text-gray-400 hover:text-blue-500"><i class="fa-regular fa-pen-to-square"></i></button>
+            <button class="text-xs text-gray-400 hover:text-red-500"><i class="fa-regular fa-trash-can"></i></button>
+            <label class="relative inline-flex items-center cursor-pointer ml-2">
+              <input type="checkbox" checked class="sr-only peer">
+              <div class="w-7 h-3.5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[1px] after:left-[1px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all"></div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule-card bg-white rounded-lg border border-gray-200 overflow-hidden" style="border-left-color: #13c2c2">
+      <div class="px-5 py-4">
+        <div class="flex items-start justify-between mb-3">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center text-sm">
+              <i class="fa-solid fa-lock"></i>
+            </div>
+            <div>
+              <h4 class="text-sm font-semibold text-gray-800">保密条款审查</h4>
+              <p class="text-[10px] text-gray-400">审查保密范围、保密期限、违约责任</p>
+            </div>
+          </div>
+          <span class="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full font-medium">未启用</span>
+        </div>
+        <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="text-xs text-gray-400 hover:text-blue-500 mb-2 block">
+          <i class="fa-regular fa-circle-down mr-1"></i>查看详情
+        </button>
+        <div class="hidden text-sm text-gray-600 space-y-2 bg-gray-50 rounded-lg p-3">
+          <div><span class="text-xs text-gray-500 block">审查条件</span><span class="text-sm">保密信息范围界定、保密期限合理性、违约赔偿责任</span></div>
+          <div><span class="text-xs text-gray-500 block">触发策略</span><span class="text-sm">保密期限超过5年或保密范围过宽时触发</span></div>
+          <div><span class="text-xs text-gray-500 block">处理方式</span><span class="text-sm">标记并提示风险</span></div>
+        </div>
+        <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
+          <span class="text-[10px] text-gray-400"><i class="fa-regular fa-clock mr-1"></i>2026-05-07 更新</span>
+          <div class="flex gap-2">
+            <button class="text-xs text-gray-400 hover:text-blue-500"><i class="fa-regular fa-pen-to-square"></i></button>
+            <button class="text-xs text-gray-400 hover:text-red-500"><i class="fa-regular fa-trash-can"></i></button>
+            <label class="relative inline-flex items-center cursor-pointer ml-2">
+              <input type="checkbox" class="sr-only peer">
+              <div class="w-7 h-3.5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[1px] after:left-[1px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all"></div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule-card bg-white rounded-lg border border-gray-200 overflow-hidden" style="border-left-color: #faad14">
+      <div class="px-5 py-4">
+        <div class="flex items-start justify-between mb-3">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-yellow-50 text-yellow-500 flex items-center justify-center text-sm">
+              <i class="fa-solid fa-file-invoice"></i>
+            </div>
+            <div>
+              <h4 class="text-sm font-semibold text-gray-800">付款条款审查</h4>
+              <p class="text-[10px] text-gray-400">审查付款方式、付款节点、发票条款</p>
+            </div>
+          </div>
+          <span class="text-[10px] bg-green-50 text-green-600 px-2 py-0.5 rounded-full font-medium">已启用</span>
+        </div>
+        <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="text-xs text-gray-400 hover:text-blue-500 mb-2 block">
+          <i class="fa-regular fa-circle-down mr-1"></i>查看详情
+        </button>
+        <div class="hidden text-sm text-gray-600 space-y-2 bg-gray-50 rounded-lg p-3">
+          <div><span class="text-xs text-gray-500 block">审查条件</span><span class="text-sm">付款比例、付款节点、发票类型约定是否清晰</span></div>
+          <div><span class="text-xs text-gray-500 block">触发策略</span><span class="text-sm">预付款过高或付款节点不明确时触发</span></div>
+          <div><span class="text-xs text-gray-500 block">处理方式</span><span class="text-sm">标记为关注项并提供调整建议</span></div>
+        </div>
+        <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
+          <span class="text-[10px] text-gray-400"><i class="fa-regular fa-clock mr-1"></i>2026-05-06 更新</span>
+          <div class="flex gap-2">
+            <button class="text-xs text-gray-400 hover:text-blue-500"><i class="fa-regular fa-pen-to-square"></i></button>
+            <button class="text-xs text-gray-400 hover:text-red-500"><i class="fa-regular fa-trash-can"></i></button>
+            <label class="relative inline-flex items-center cursor-pointer ml-2">
+              <input type="checkbox" checked class="sr-only peer">
+              <div class="w-7 h-3.5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[1px] after:left-[1px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all"></div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule-card bg-white rounded-lg border border-gray-200 overflow-hidden" style="border-left-color: #faad14">
+      <div class="px-5 py-4">
+        <div class="flex items-start justify-between mb-3">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-yellow-50 text-yellow-500 flex items-center justify-center text-sm">
+              <i class="fa-solid fa-cloud-sun"></i>
+            </div>
+            <div>
+              <h4 class="text-sm font-semibold text-gray-800">不可抗力条款审查</h4>
+              <p class="text-[10px] text-gray-400">审查不可抗力范围、通知义务、法律后果</p>
+            </div>
+          </div>
+          <span class="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full font-medium">未启用</span>
+        </div>
+        <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="text-xs text-gray-400 hover:text-blue-500 mb-2 block">
+          <i class="fa-regular fa-circle-down mr-1"></i>查看详情
+        </button>
+        <div class="hidden text-sm text-gray-600 space-y-2 bg-gray-50 rounded-lg p-3">
+          <div><span class="text-xs text-gray-500 block">审查条件</span><span class="text-sm">不可抗力定义范围是否合理，通知义务是否明确</span></div>
+          <div><span class="text-xs text-gray-500 block">触发策略</span><span class="text-sm">未列举典型不可抗力情形时触发</span></div>
+          <div><span class="text-xs text-gray-500 block">处理方式</span><span class="text-sm">建议补充典型情形</span></div>
+        </div>
+        <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
+          <span class="text-[10px] text-gray-400"><i class="fa-regular fa-clock mr-1"></i>2026-05-05 更新</span>
+          <div class="flex gap-2">
+            <button class="text-xs text-gray-400 hover:text-blue-500"><i class="fa-regular fa-pen-to-square"></i></button>
+            <button class="text-xs text-gray-400 hover:text-red-500"><i class="fa-regular fa-trash-can"></i></button>
+            <label class="relative inline-flex items-center cursor-pointer ml-2">
+              <input type="checkbox" class="sr-only peer">
+              <div class="w-7 h-3.5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[1px] after:left-[1px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all"></div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal Overlay -->
+  <div id="addRuleModal" class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center" onclick="if(event.target===this)this.classList.add('hidden')">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+        <h3 class="text-base font-semibold text-gray-800">新建审查规则</h3>
+        <button onclick="document.getElementById('addRuleModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 text-lg leading-none">&times;</button>
+      </div>
+      <div class="p-6 space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">规则名称 <span class="text-red-500">*</span></label>
+          <input type="text" placeholder="请输入规则名称" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">规则描述 <span class="text-red-500">*</span></label>
+          <textarea rows="2" placeholder="请输入规则描述" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">审查条件 <span class="text-red-500">*</span></label>
+          <textarea rows="2" placeholder="例如：甲方违约责任 > 乙方违约责任 × 2" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">触发策略 <span class="text-red-500">*</span></label>
+          <textarea rows="2" placeholder="例如：违约金比例或赔偿上限差异超过一倍" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">处理方式 <span class="text-red-500">*</span></label>
+          <textarea rows="2" placeholder="例如：标记为高风险，建议双方协商调整" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+      </div>
+      <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-100 bg-gray-50">
+        <button onclick="document.getElementById('addRuleModal').classList.add('hidden')" class="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-600 hover:bg-gray-50">取消</button>
+        <button onclick="document.getElementById('addRuleModal').classList.add('hidden');alert('审查规则创建成功')" class="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600">确认创建</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

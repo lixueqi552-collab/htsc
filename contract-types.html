@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>合同类型管理</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body { font-family: 'Microsoft YaHei', -apple-system, sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-50 p-6">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h2 class="text-lg font-semibold text-gray-800">合同类型管理</h2>
+      <p class="text-xs text-gray-500 mt-0.5">管理系统支持的合同类型，新增的类型可在上传合同时选择</p>
+    </div>
+  </div>
+
+  <!-- Add Form -->
+  <div class="bg-white rounded-lg border border-gray-200 p-5 mb-6">
+    <div class="flex items-center gap-3 mb-1">
+      <input id="newTypeName" placeholder="类型名称" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-40">
+      <input id="newTypeDesc" placeholder="类型描述（可选）" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 flex-1">
+      <button onclick="addType()" class="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-600 transition flex items-center gap-2">
+        <i class="fa-solid fa-plus"></i>新增类型
+      </button>
+    </div>
+  </div>
+
+  <!-- Types Table -->
+  <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="bg-gray-50 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+          <th class="px-5 py-3">类型名称</th>
+          <th class="px-5 py-3">描述</th>
+          <th class="px-5 py-3">合同数</th>
+          <th class="px-5 py-3">状态</th>
+          <th class="px-5 py-3 text-center">操作</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100" id="typeTableBody"></tbody>
+    </table>
+  </div>
+
+  <script>
+    let contractTypes = [
+      { id: '1', name: '采购合同', desc: '物资、设备、原材料等采购类合同', count: 42, enabled: true },
+      { id: '2', name: '销售合同', desc: '产品销售、渠道分销等销售类合同', count: 18, enabled: true },
+      { id: '3', name: '服务合同', desc: 'IT服务、咨询服务、运维服务等服务类合同', count: 35, enabled: true },
+      { id: '4', name: '租赁合同', desc: '房屋租赁、设备租赁等租赁类合同', count: 12, enabled: true },
+      { id: '5', name: '保密协议', desc: 'NDA保密协议、竞业禁止协议等', count: 15, enabled: true },
+      { id: '6', name: '其他', desc: '其他类型的合同', count: 6, enabled: true },
+    ];
+    let idCounter = 7;
+
+    function renderTypes() {
+      const tbody = document.getElementById('typeTableBody');
+      tbody.innerHTML = contractTypes.map(t => `
+        <tr data-id="${t.id}">
+          <td class="px-5 py-3"><span class="bg-blue-50 text-blue-600 text-xs px-2 py-0.5 rounded font-medium">${t.name}</span></td>
+          <td class="px-5 py-3 text-gray-500 text-sm">${t.desc}</td>
+          <td class="px-5 py-3 text-sm">${t.count}</td>
+          <td class="px-5 py-3"><span class="text-xs px-2 py-0.5 rounded font-medium ${t.enabled ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-500'}">${t.enabled ? '已启用' : '未启用'}</span></td>
+          <td class="px-5 py-3 text-center">
+            <button onclick="toggleType('${t.id}')" class="text-gray-400 hover:text-blue-500 mx-1.5" title="启用/禁用"><i class="fa-regular fa-circle-check"></i></button>
+            <button onclick="deleteType('${t.id}')" class="text-red-400 hover:text-red-500 mx-1.5" title="删除"><i class="fa-regular fa-trash-can"></i></button>
+          </td>
+        </tr>
+      `).join('');
+      // Sync to localStorage for upload page
+      localStorage.setItem('contractTypes', JSON.stringify(contractTypes.map(t => t.name)));
+    }
+
+    function addType() {
+      const name = document.getElementById('newTypeName').value.trim();
+      const desc = document.getElementById('newTypeDesc').value.trim();
+      if (!name) { alert('请输入类型名称'); return; }
+      contractTypes.push({ id: String(idCounter++), name, desc: desc || '', count: 0, enabled: true });
+      document.getElementById('newTypeName').value = '';
+      document.getElementById('newTypeDesc').value = '';
+      renderTypes();
+    }
+
+    function toggleType(id) {
+      const t = contractTypes.find(x => x.id === id);
+      if (t) t.enabled = !t.enabled;
+      renderTypes();
+    }
+
+    function deleteType(id) {
+      const t = contractTypes.find(x => x.id === id);
+      if (t && t.count > 0 && !confirm(`该类型下有 ${t.count} 份合同，确定删除？`)) return;
+      contractTypes = contractTypes.filter(x => x.id !== id);
+      renderTypes();
+    }
+
+    renderTypes();
+  </script>
+</body>
+</html>

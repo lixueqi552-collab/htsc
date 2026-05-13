@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>审查意见</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body { font-family: 'Microsoft YaHei', -apple-system, sans-serif; overflow: hidden; }
+    .tag { padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; }
+    .severity-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+    .clause-block { transition: all .2s; cursor: pointer; }
+    .clause-block:hover { background: #f0f7ff; }
+    .clause-block.active { background: #fffbe6; }
+    .issue-row { transition: all .15s; }
+    .issue-row:hover { box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+    .issue-row.active { box-shadow: 0 1px 8px rgba(22,119,255,.15); }
+    .plan-box { transition: all .2s; }
+    .plan-box:hover { background: #f5f5f5; }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <!-- Top Bar -->
+  <div class="flex items-center justify-between px-6 py-3 bg-white border-b border-gray-200">
+    <div>
+      <h2 class="text-base font-semibold text-gray-800">审查意见 — IT运维服务合同</h2>
+      <p class="text-xs text-gray-400 mt-0.5">点击问题可定位合同原文位置 · 红黄绿三级风险预警</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <button class="px-3 py-1.5 border border-gray-300 rounded-lg text-xs text-gray-600 hover:bg-gray-50"><i class="fa-regular fa-file-word mr-1"></i>导出Word报告</button>
+      <button class="px-3 py-1.5 bg-blue-500 text-white rounded-lg text-xs font-medium hover:bg-blue-600"><i class="fa-regular fa-paper-plane mr-1"></i>提交复核</button>
+    </div>
+  </div>
+
+  <div style="display:flex; height:calc(100vh - 52px); gap:0;">
+    <!-- Left Panel: Contract Text -->
+    <div style="flex:0 0 42%; overflow:auto; background:#fff; border-right:1px solid #e5e7eb; padding:20px;">
+      <h4 class="text-sm font-semibold text-gray-700 mb-4 flex items-center gap-2">
+        <i class="fa-regular fa-file-lines text-blue-500"></i>合同原文
+      </h4>
+
+      <div class="clause-block" data-clause="第一条" style="padding:6px 10px; margin-bottom:4px; border-radius:4px; border-left:3px solid transparent;">
+        <pre style="font-family:inherit; font-size:13px; line-height:1.7; white-space:pre-wrap; margin:0;">第一条 合同主体
+甲方：云帆科技有限公司（以下简称"甲方"）
+乙方：星辰技术有限公司（以下简称"乙方"）</pre>
+      </div>
+      <div class="clause-block" data-clause="第二条" style="padding:6px 10px; margin-bottom:4px; border-radius:4px; border-left:3px solid transparent;">
+        <pre style="font-family:inherit; font-size:13px; line-height:1.7; white-space:pre-wrap; margin:0;">第二条 合同标的
+乙方根据甲方需求提供IT运维服务，具体服务内容详见附件一《服务范围说明书》。</pre>
+      </div>
+      <div class="clause-block" data-clause="第三条" style="padding:6px 10px; margin-bottom:4px; border-radius:4px; border-left:3px solid transparent;">
+        <pre style="font-family:inherit; font-size:13px; line-height:1.7; white-space:pre-wrap; margin:0;">第三条 服务期限
+本合同服务期限为三年，自2026年5月15日起至2029年5月14日止。</pre>
+      </div>
+      <div class="clause-block" data-clause="第3.5条" data-issue-id="iss-3" style="padding:6px 10px; margin-bottom:4px; border-radius:4px; border-left:3px solid #faad14;">
+        <pre style="font-family:inherit; font-size:13px; line-height:1.7; white-space:pre-wrap; margin:0;">第3.5条 付款条款
+甲方应于乙方提供服务后三十个工作日内支付服务费用。付款时间节点由双方协商确定。若乙方逾期提供服务，甲方有权顺延付款。</pre>
+        <span class="severity-dot" style="background:#faad14; vertical-align:middle; margin-right:4px;"></span>
+        <span class="text-xs" style="color:#faad14">付款条款不明确</span>
+      </div>
+      <div class="clause-block" data-clause="第7.3条" data-issue-id="iss-1" style="padding:6px 10px; margin-bottom:4px; border-radius:4px; border-left:3px solid #ff4d4f;">
+        <pre style="font-family:inherit; font-size:13px; line-height:1.7; white-space:pre-wrap; margin:0;">第七条 违约责任
+第7.3条 违约责任上限
+任何一方违反本合同约定，应向对方承担违约责任。乙方违约责任上限为合同总金额的百分之十，甲方违约责任上限为合同总金额的百分之三十。</pre>
+        <span class="severity-dot" style="background:#ff4d4f; vertical-align:middle; margin-right:4px;"></span>
+        <span class="text-xs" style="color:#ff4d4f">违约责任不对等</span>
+      </div>
+      <div class="clause-block" data-clause="第8.1条" data-issue-id="iss-4" style="padding:6px 10px; margin-bottom:4px; border-radius:4px; border-left:3px solid #faad14;">
+        <pre style="font-family:inherit; font-size:13px; line-height:1.7; white-space:pre-wrap; margin:0;">第八条 保密义务
+第8.1条 保密义务
+双方应对在履行本合同过程中知悉的对方商业秘密予以保密，未经对方书面同意不得向第三方披露。</pre>
+        <span class="severity-dot" style="background:#faad14; vertical-align:middle; margin-right:4px;"></span>
+        <span class="text-xs" style="color:#faad14">保密义务期限缺失</span>
+      </div>
+      <div class="clause-block" data-clause="第12.1条" data-issue-id="iss-2" style="padding:6px 10px; margin-bottom:4px; border-radius:4px; border-left:3px solid #ff4d4f;">
+        <pre style="font-family:inherit; font-size:13px; line-height:1.7; white-space:pre-wrap; margin:0;">第十二条 争议解决
+第12.1条 争议解决
+因本合同引起的或与本合同有关的任何争议，双方应友好协商解决。</pre>
+        <span class="severity-dot" style="background:#ff4d4f; vertical-align:middle; margin-right:4px;"></span>
+        <span class="text-xs" style="color:#ff4d4f">争议解决条款缺失</span>
+      </div>
+      <div class="clause-block" data-clause="第15.2条" data-issue-id="iss-5" style="padding:6px 10px; margin-bottom:4px; border-radius:4px; border-left:3px solid #52c41a;">
+        <pre style="font-family:inherit; font-size:13px; line-height:1.7; white-space:pre-wrap; margin:0;">第十五条 不可抗力
+第15.2条 不可抗力
+因不可抗力导致不能履行合同的，受影响方应及时通知对方并提供证明，可部分或全部免除责任。</pre>
+        <span class="severity-dot" style="background:#52c41a; vertical-align:middle; margin-right:4px;"></span>
+        <span class="text-xs" style="color:#52c41a">不可抗力条款笼统</span>
+      </div>
+    </div>
+
+    <!-- Right Panel: Review Report -->
+    <div style="flex:1; overflow:auto; padding:16px;">
+      <!-- Score row -->
+      <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-bottom:12px;">
+        <div class="rounded-lg p-4 text-center" style="background:#fffbe6">
+          <p style="font-size:26px; font-weight:700; margin:0; color:#faad14">78.5</p>
+          <p class="text-xs text-gray-400 mt-0.5">综合评分</p>
+        </div>
+        <div class="bg-white rounded-lg border border-gray-200 p-3 text-center">
+          <p class="text-sm font-bold text-emerald-500">85</p>
+          <div class="w-full h-1.5 bg-gray-100 rounded-full mt-1"><div class="h-full rounded-full bg-emerald-500" style="width:85%"></div></div>
+          <p class="text-[10px] text-gray-400 mt-1">条款完整性</p>
+        </div>
+        <div class="bg-white rounded-lg border border-gray-200 p-3 text-center">
+          <p class="text-sm font-bold text-red-500">65</p>
+          <div class="w-full h-1.5 bg-gray-100 rounded-full mt-1"><div class="h-full rounded-full bg-red-500" style="width:65%"></div></div>
+          <p class="text-[10px] text-gray-400 mt-1">风险控制</p>
+        </div>
+        <div class="bg-white rounded-lg border border-gray-200 p-3 text-center">
+          <p class="text-sm font-bold text-emerald-500">80</p>
+          <div class="w-full h-1.5 bg-gray-100 rounded-full mt-1"><div class="h-full rounded-full bg-emerald-500" style="width:80%"></div></div>
+          <p class="text-[10px] text-gray-400 mt-1">权利义务</p>
+        </div>
+        <div class="bg-white rounded-lg border border-gray-200 p-3 text-center">
+          <p class="text-sm font-bold text-purple-500">90</p>
+          <div class="w-full h-1.5 bg-gray-100 rounded-full mt-1"><div class="h-full rounded-full bg-purple-500" style="width:90%"></div></div>
+          <p class="text-[10px] text-gray-400 mt-1">知识产权</p>
+        </div>
+      </div>
+
+      <!-- Issues -->
+      <div class="space-y-2 mb-3">
+        <!-- Issue 1: High risk -->
+        <div class="issue-row bg-white rounded-lg border border-gray-200 overflow-hidden" style="border-left:4px solid #ff4d4f">
+          <div class="px-4 py-3" data-clause="第7.3条" onclick="locateClause(this)">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="severity-dot" style="background:#ff4d4f"></span>
+              <span class="tag" style="background:#fff2f0;color:#ff4d4f;font-weight:600">高风险</span>
+              <span class="text-sm font-medium text-gray-800">违约责任不对等</span>
+              <span class="text-[10px] text-gray-400">第7.3条</span>
+            </div>
+            <p class="text-xs text-gray-500 mb-2">乙方违约责任上限仅为合同金额的10%，而甲方上限为30%，存在不对等</p>
+            <div style="background:#fff2f0; border-radius:6px; padding:6px 10px;">
+              <i class="fa-regular fa-lightbulb" style="color:#ff4d4f;margin-right:4px"></i>
+              <span class="text-xs" style="color:#595959">建议将乙方的违约责任上限调整至合同金额的20%-30%，使双方责任对等</span>
+            </div>
+          </div>
+          <div class="px-4 pb-2">
+            <button class="text-xs text-blue-500 hover:text-blue-600" onclick="togglePlan('plan-1')">
+              <i class="fa-regular fa-circle-right" style="transition:transform .2s"></i> 查看详细修改方案
+            </button>
+            <div id="plan-1" class="mt-2 space-y-2" style="display:none">
+              <div style="background:#f0f5ff; border-radius:6px; padding:6px 10px;">
+                <i class="fa-regular fa-balance-scale" style="color:#1677ff"></i>
+                <span class="text-xs" style="color:#1d39c4"> 法律依据：《民法典》第585条：约定的违约金过分高于造成的损失的，人民法院或者仲裁机构可以根据当事人的请求予以适当减少。</span>
+              </div>
+              <div class="plan-box" style="background:#fafafa; border-radius:6px; padding:8px 10px;">
+                <p class="text-xs font-medium text-gray-700"><i class="fa-regular fa-check-circle text-blue-500 mr-1"></i>1. 调整违约金上限</p>
+                <p class="text-xs text-gray-500 mt-0.5">将乙方违约金上限从10%提高至20%，与甲方保持一致的对等比例</p>
+                <div style="background:#fff; border:1px dashed #d9d9d9; border-radius:4px; padding:4px 8px; margin-top:4px;">
+                  <code style="font-size:11px; color:#8c8c8c">示例：任何一方违反本合同约定，应向对方支付合同总金额20%的违约金</code>
+                </div>
+              </div>
+              <div class="plan-box" style="background:#fafafa; border-radius:6px; padding:8px 10px;">
+                <p class="text-xs font-medium text-gray-700"><i class="fa-regular fa-check-circle text-blue-500 mr-1"></i>2. 增加违约金阶梯机制</p>
+                <p class="text-xs text-gray-500 mt-0.5">根据违约严重程度设置不同比例的违约金，轻微违约适用较低比例</p>
+                <div style="background:#fff; border:1px dashed #d9d9d9; border-radius:4px; padding:4px 8px; margin-top:4px;">
+                  <code style="font-size:11px; color:#8c8c8c">示例：一般违约按合同金额5%支付，严重违约按合同金额20%支付</code>
+                </div>
+              </div>
+              <div class="plan-box" style="background:#fafafa; border-radius:6px; padding:8px 10px;">
+                <p class="text-xs font-medium text-gray-700"><i class="fa-regular fa-check-circle text-blue-500 mr-1"></i>3. 明确损失赔偿范围</p>
+                <p class="text-xs text-gray-500 mt-0.5">约定损失赔偿包括直接损失和可预见的间接损失</p>
+              </div>
+              <div class="text-right mt-1">
+                <button class="text-xs" style="color:#52c41a">采纳方案</button>
+                <button class="text-xs text-gray-400 ml-2">忽略</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Issue 2: High risk -->
+        <div class="issue-row bg-white rounded-lg border border-gray-200 overflow-hidden" style="border-left:4px solid #ff4d4f">
+          <div class="px-4 py-3" data-clause="第12.1条" onclick="locateClause(this)">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="severity-dot" style="background:#ff4d4f"></span>
+              <span class="tag" style="background:#fff2f0;color:#ff4d4f;font-weight:600">高风险</span>
+              <span class="text-sm font-medium text-gray-800">争议解决条款缺失</span>
+              <span class="text-[10px] text-gray-400">第12.1条</span>
+            </div>
+            <p class="text-xs text-gray-500 mb-2">合同未明确约定争议解决方式和管辖地</p>
+            <div style="background:#fff2f0; border-radius:6px; padding:6px 10px;">
+              <i class="fa-regular fa-lightbulb" style="color:#ff4d4f;margin-right:4px"></i>
+              <span class="text-xs" style="color:#595959">建议增加"因本合同引起的争议由甲方所在地法院管辖"</span>
+            </div>
+          </div>
+          <div class="px-4 pb-2">
+            <button class="text-xs text-blue-500 hover:text-blue-600" onclick="togglePlan('plan-2')">查看详细修改方案</button>
+            <div id="plan-2" class="mt-2 space-y-2" style="display:none">
+              <div style="background:#f0f5ff; border-radius:6px; padding:6px 10px;">
+                <i class="fa-regular fa-balance-scale" style="color:#1677ff"></i>
+                <span class="text-xs" style="color:#1d39c4"> 法律依据：《民事诉讼法》第34条：合同或者其他财产权益纠纷的当事人可以书面协议选择管辖法院。</span>
+              </div>
+              <div class="plan-box" style="background:#fafafa; border-radius:6px; padding:8px 10px;">
+                <p class="text-xs font-medium text-gray-700"><i class="fa-regular fa-check-circle text-blue-500 mr-1"></i>1. 增加管辖条款</p>
+                <p class="text-xs text-gray-500 mt-0.5">明确约定争议解决方式为诉讼，管辖法院为甲方所在地人民法院</p>
+              </div>
+              <div class="plan-box" style="background:#fafafa; border-radius:6px; padding:8px 10px;">
+                <p class="text-xs font-medium text-gray-700"><i class="fa-regular fa-check-circle text-blue-500 mr-1"></i>2. 补充仲裁选项</p>
+                <p class="text-xs text-gray-500 mt-0.5">如双方倾向于仲裁，可约定提交CIETAC仲裁</p>
+              </div>
+              <div class="plan-box" style="background:#fafafa; border-radius:6px; padding:8px 10px;">
+                <p class="text-xs font-medium text-gray-700"><i class="fa-regular fa-check-circle text-blue-500 mr-1"></i>3. 明确适用法律</p>
+                <p class="text-xs text-gray-500 mt-0.5">约定合同适用中华人民共和国法律</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Issue 3: Medium risk -->
+        <div class="issue-row bg-white rounded-lg border border-gray-200 overflow-hidden" style="border-left:4px solid #faad14">
+          <div class="px-4 py-3" data-clause="第3.5条" onclick="locateClause(this)">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="severity-dot" style="background:#faad14"></span>
+              <span class="tag" style="background:#fffbe6;color:#faad14;font-weight:600">中风险</span>
+              <span class="text-sm font-medium text-gray-800">付款条款不明确</span>
+              <span class="text-[10px] text-gray-400">第3.5条</span>
+            </div>
+            <p class="text-xs text-gray-500 mb-2">付款时间节点描述模糊，未约定逾期付款的违约金</p>
+            <div style="background:#fffbe6; border-radius:6px; padding:6px 10px;">
+              <i class="fa-regular fa-lightbulb" style="color:#faad14;margin-right:4px"></i>
+              <span class="text-xs" style="color:#595959">建议明确每笔付款的具体时间和逾期违约金比例</span>
+            </div>
+          </div>
+          <div class="px-4 pb-2">
+            <button class="text-xs text-blue-500 hover:text-blue-600" onclick="togglePlan('plan-3')">查看详细修改方案</button>
+            <div id="plan-3" class="mt-2 space-y-2" style="display:none">
+              <div style="background:#f0f5ff; border-radius:6px; padding:6px 10px;">
+                <span class="text-xs" style="color:#1d39c4"><i class="fa-regular fa-balance-scale" style="color:#1677ff"></i> 法律依据：《民法典》第579条</span>
+              </div>
+              <div class="plan-box" style="background:#fafafa; border-radius:6px; padding:8px 10px;">
+                <p class="text-xs font-medium text-gray-700">1. 细化付款节点</p>
+                <p class="text-xs text-gray-500 mt-0.5">将付款与具体交付成果或里程碑挂钩</p>
+              </div>
+              <div class="plan-box" style="background:#fafafa; border-radius:6px; padding:8px 10px;">
+                <p class="text-xs font-medium text-gray-700">2. 约定逾期违约金</p>
+                <p class="text-xs text-gray-500 mt-0.5">按日万分之五计算逾期付款违约金</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Issue 4: Medium risk -->
+        <div class="issue-row bg-white rounded-lg border border-gray-200 overflow-hidden" style="border-left:4px solid #faad14">
+          <div class="px-4 py-3" data-clause="第8.1条" onclick="locateClause(this)">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="severity-dot" style="background:#faad14"></span>
+              <span class="tag" style="background:#fffbe6;color:#faad14;font-weight:600">中风险</span>
+              <span class="text-sm font-medium text-gray-800">保密义务期限缺失</span>
+              <span class="text-[10px] text-gray-400">第8.1条</span>
+            </div>
+            <p class="text-xs text-gray-500 mb-2">保密条款未约定保密期限</p>
+            <div style="background:#fffbe6; border-radius:6px; padding:6px 10px;">
+              <i class="fa-regular fa-lightbulb" style="color:#faad14;margin-right:4px"></i>
+              <span class="text-xs" style="color:#595959">建议增加"保密义务自合同终止后3年内继续有效"</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Issue 5: Low risk -->
+        <div class="issue-row bg-white rounded-lg border border-gray-200 overflow-hidden" style="border-left:4px solid #52c41a">
+          <div class="px-4 py-3" data-clause="第15.2条" onclick="locateClause(this)">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="severity-dot" style="background:#52c41a"></span>
+              <span class="tag px-2 py-0.5 rounded text-xs font-semibold" style="background:#f6ffed;color:#52c41a">低风险</span>
+              <span class="text-sm font-medium text-gray-800">不可抗力条款笼统</span>
+              <span class="text-[10px] text-gray-400">第15.2条</span>
+            </div>
+            <p class="text-xs text-gray-500 mb-2">不可抗力条款未列举具体情形</p>
+            <div style="background:#f6ffed; border-radius:6px; padding:6px 10px;">
+              <i class="fa-regular fa-lightbulb" style="color:#52c41a;margin-right:4px"></i>
+              <span class="text-xs" style="color:#595959">建议列举常见的不可抗力情形（自然灾害、疫情、政策变化等）</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary -->
+      <div class="bg-white rounded-lg border border-gray-200 p-4">
+        <h4 class="text-xs font-semibold text-gray-700 mb-2">审查总结与建议</h4>
+        <p class="text-sm text-gray-600">该合同整体条款较为完整，但在风险控制和权利义务对等性方面存在较多问题。核心风险在于违约责任不对等和争议解决条款缺失，建议在法律复核中进行重点修改。</p>
+        <div class="mt-3 pt-3 border-t border-gray-100">
+          <label class="block text-xs text-gray-400 mb-1">人工复核意见</label>
+          <textarea rows="2" class="w-full border border-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="请输入人工复核意见..."></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function locateClause(el) {
+      const clause = el.dataset.clause;
+      if (!clause) return;
+      document.querySelectorAll('.issue-row').forEach(r => r.classList.remove('active'));
+      el.closest('.issue-row').classList.add('active');
+      const blocks = document.querySelectorAll('.clause-block');
+      blocks.forEach(b => b.classList.remove('active'));
+      const target = Array.from(blocks).find(b => b.dataset.clause === clause);
+      if (target) {
+        target.classList.add('active');
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+    function togglePlan(id) {
+      const el = document.getElementById(id);
+      el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    }
+  </script>
+</body>
+</html>

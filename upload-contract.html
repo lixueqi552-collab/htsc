@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>上传合同</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body { font-family: 'Microsoft YaHei', -apple-system, sans-serif; }
+    .drop-zone { border: 2px dashed #d1d5db; transition: all .2s; }
+    .drop-zone:hover, .drop-zone.dragover { border-color: #3b82f6; background: #f0f7ff; }
+  </style>
+</head>
+<body class="bg-gray-50 p-6">
+  <div class="max-w-4xl mx-auto">
+    <!-- Breadcrumb -->
+    <div class="text-sm text-gray-500 mb-4">
+      <a href="contract-list.html" class="text-blue-500 hover:text-blue-600">合同管理</a>
+      <span class="mx-2">/</span>
+      <span class="text-gray-800 font-medium">上传合同</span>
+    </div>
+
+    <div class="grid grid-cols-3 gap-6">
+      <!-- Left: Form -->
+      <div class="col-span-2 space-y-5">
+        <!-- Basic Info -->
+        <div class="bg-white rounded-lg border border-gray-200 p-6">
+          <h3 class="text-base font-semibold text-gray-800 mb-4 flex items-center gap-2">
+            <i class="fa-regular fa-file-lines text-blue-500"></i>基本信息
+          </h3>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1.5">合同名称 <span class="text-red-400">*</span></label>
+              <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="请输入合同名称">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1.5">合同类型 <span class="text-red-400">*</span></label>
+              <div class="flex gap-2">
+                <select id="typeSelect" class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"></select>
+                <a href="contract-list.html" class="inline-flex items-center px-2.5 py-2 border border-gray-300 rounded-lg text-sm text-gray-500 hover:bg-gray-50 transition">
+                  <i class="fa-solid fa-gear"></i>
+                </a>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1.5">合同编号</label>
+              <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="自动生成或手动输入">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1.5">合同金额（元）</label>
+              <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="0.00">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1.5">甲方名称</label>
+              <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="甲方单位名称">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1.5">乙方名称</label>
+              <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="乙方单位名称">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1.5">签署日期</label>
+              <input type="date" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1.5">有效期至</label>
+              <input type="date" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+          </div>
+          <div class="mt-4">
+            <label class="block text-sm font-medium text-gray-600 mb-1.5">合同备注</label>
+            <textarea rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="可选，输入备注信息"></textarea>
+          </div>
+        </div>
+
+        <!-- File Upload -->
+        <div class="bg-white rounded-lg border border-gray-200 p-6">
+          <h3 class="text-base font-semibold text-gray-800 mb-4 flex items-center gap-2">
+            <i class="fa-regular fa-folder-open text-blue-500"></i>上传文件
+          </h3>
+          <div class="drop-zone rounded-lg p-10 text-center cursor-pointer" id="dropZone">
+            <i class="fa-regular fa-file-pdf text-4xl text-gray-300 mb-3"></i>
+            <p class="text-sm text-gray-500 mb-1">拖拽文件到此处，或<span class="text-blue-500 font-medium">点击浏览</span></p>
+            <p class="text-xs text-gray-400">支持 PDF、DOC、DOCX 格式，文件大小不超过 50MB</p>
+            <input type="file" accept=".pdf,.doc,.docx" class="hidden" id="fileInput">
+          </div>
+          <div id="fileList" class="hidden mt-4 space-y-2">
+            <div class="flex items-center justify-between bg-gray-50 rounded-lg px-4 py-3">
+              <div class="flex items-center gap-3">
+                <i class="fa-regular fa-file-pdf text-red-400 text-lg"></i>
+                <div>
+                  <p class="text-sm font-medium text-gray-700">采购合同-框架协议.pdf</p>
+                  <p class="text-xs text-gray-400">2.4 MB</p>
+                </div>
+              </div>
+              <button class="text-red-400 hover:text-red-500"><i class="fa-regular fa-circle-xmark"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Tips -->
+      <div class="space-y-4">
+        <div class="bg-white rounded-lg border border-gray-200 p-5">
+          <h3 class="text-sm font-semibold text-gray-800 mb-3 flex items-center gap-2">
+            <i class="fa-regular fa-circle-info text-blue-500"></i>上传说明
+          </h3>
+          <ul class="space-y-2 text-xs text-gray-500">
+            <li class="flex gap-2"><i class="fa-regular fa-circle-check text-green-400 mt-0.5"></i>支持 PDF、DOC、DOCX 格式</li>
+            <li class="flex gap-2"><i class="fa-regular fa-circle-check text-green-400 mt-0.5"></i>单个文件最大 50MB</li>
+            <li class="flex gap-2"><i class="fa-regular fa-circle-check text-green-400 mt-0.5"></i>上传后自动进入 AI 审查队列</li>
+            <li class="flex gap-2"><i class="fa-regular fa-circle-check text-green-400 mt-0.5"></i>已上传合同可在列表页查看状态</li>
+          </ul>
+        </div>
+        <div class="bg-blue-50 rounded-lg border border-blue-200 p-4">
+          <div class="flex gap-3">
+            <i class="fa-regular fa-lightbulb text-blue-500 mt-0.5"></i>
+            <div>
+              <p class="text-sm font-medium text-blue-800">提示</p>
+              <p class="text-xs text-blue-600 mt-1">合同上传后将自动启动 AI 审查，通常 3-5 分钟可完成审查。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex items-center justify-end gap-3 mt-6 bg-white rounded-lg border border-gray-200 p-4">
+      <button onclick="parent.location.href='contract-list.html'" class="px-5 py-2 border border-gray-300 rounded-lg text-sm text-gray-600 hover:bg-gray-50 transition">取消</button>
+      <button onclick="showProgressModal()" class="px-5 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 transition flex items-center gap-2">
+        <i class="fa-regular fa-paper-plane"></i>提交上传
+      </button>
+    </div>
+  </div>
+
+  <!-- Progress Modal -->
+  <div id="progressModal" class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 overflow-hidden" onclick="event.stopPropagation()">
+      <div class="px-8 pt-8 pb-4 text-center">
+        <p id="progressTitle" class="text-lg font-semibold text-gray-800">提交成功</p>
+        <p id="progressDesc" class="text-sm text-gray-500 mt-1">合同已成功上传至审查队列</p>
+      </div>
+
+      <!-- Steps -->
+      <div class="px-10 pb-6">
+        <div id="step1" class="flex items-start gap-4 opacity-100">
+          <div id="dot1" class="w-11 h-11 rounded-full bg-green-500 flex items-center justify-center text-white text-lg shrink-0 transition-all duration-300"><i class="fa-solid fa-check"></i></div>
+          <div class="pt-1.5">
+            <p id="label1" class="text-sm font-semibold text-green-600">已提交</p>
+            <p id="desc1" class="text-xs text-gray-400 mt-0.5">文件上传完成，等待审查队列</p>
+          </div>
+        </div>
+        <div class="ml-[21px] h-6 w-0.5 bg-gray-200 transition-all duration-500" id="line1"></div>
+
+        <div id="step2" class="flex items-start gap-4 opacity-50">
+          <div id="dot2" class="w-11 h-11 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 text-lg shrink-0 transition-all duration-300"><i class="fa-regular fa-robot"></i></div>
+          <div class="pt-1.5">
+            <p id="label2" class="text-sm text-gray-400">审查中</p>
+            <p id="desc2" class="text-xs text-gray-400 mt-0.5">AI 正在逐条分析合同条款...</p>
+          </div>
+        </div>
+        <div class="ml-[21px] h-6 w-0.5 bg-gray-200 transition-all duration-500" id="line2"></div>
+
+        <div id="step3" class="flex items-start gap-4 opacity-50">
+          <div id="dot3" class="w-11 h-11 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 text-lg shrink-0 transition-all duration-300"><i class="fa-regular fa-circle-check"></i></div>
+          <div class="pt-1.5">
+            <p id="label3" class="text-sm text-gray-400">已完成</p>
+            <p id="desc3" class="text-xs text-gray-400 mt-0.5">审查报告已生成，可随时查看</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress Bar (visible during review) -->
+      <div id="progressSection" class="px-10 pb-6 hidden">
+        <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+          <div id="progressBar" class="h-full bg-blue-500 rounded-full transition-all duration-700" style="width:0%"></div>
+        </div>
+        <p id="progressTime" class="text-center text-xs text-gray-400 mt-2">预计剩余 3 分钟</p>
+      </div>
+
+      <!-- Actions -->
+      <div id="actionSection" class="hidden px-8 pb-8">
+        <div class="flex justify-center gap-3">
+          <button onclick="parent.location.href='contract-list.html'" class="px-5 py-2 border border-gray-300 rounded-lg text-sm text-gray-600 hover:bg-gray-50">返回列表</button>
+          <button onclick="parent.location.href='review-opinion.html'" class="px-5 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 flex items-center gap-2">
+            <i class="fa-regular fa-eye"></i>查看审查报告
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .animate-spin { animation: spin 1s linear infinite; }
+  </style>
+
+  <script>
+    const defaultTypes = ['采购合同', '销售合同', '服务合同', '租赁合同', '保密协议', '其他'];
+    const select = document.getElementById('typeSelect');
+    function loadTypes() {
+      let types;
+      try { types = JSON.parse(localStorage.getItem('contractTypes') || 'null'); } catch { types = null; }
+      if (!types) types = defaultTypes;
+      select.innerHTML = types.map(t => `<option>${t}</option>`).join('');
+    }
+    loadTypes();
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileList = document.getElementById('fileList');
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', e => { e.preventDefault(); dropZone.classList.remove('dragover'); fileList.classList.remove('hidden'); });
+    fileInput.addEventListener('change', () => { if (fileInput.files.length > 0) fileList.classList.remove('hidden'); });
+
+    function showProgressModal() {
+      const modal = document.getElementById('progressModal');
+      modal.classList.remove('hidden');
+      animateProgress();
+    }
+
+    function animateProgress() {
+      const titles = ['提交成功', '正在审查合同', '审查完成'];
+      const descs = ['合同已成功上传至审查队列', '正在对合同进行全面 AI 分析，请稍候...', 'AI 审查已完成，可查看详细报告'];
+
+      setTimeout(() => {
+        // Step 1 → 2
+        document.getElementById('progressTitle').textContent = titles[1];
+        document.getElementById('progressDesc').textContent = descs[1];
+        document.getElementById('progressSection').classList.remove('hidden');
+        document.getElementById('line1').className = 'ml-[21px] h-6 w-0.5 bg-green-500 transition-all duration-500';
+
+        setStep(1);
+        setProgress(30);
+      }, 1500);
+
+      setTimeout(() => setProgress(45), 2800);
+      setTimeout(() => setProgress(60), 4000);
+      setTimeout(() => setProgress(78), 5500);
+
+      setTimeout(() => {
+        // Step 2 → 3
+        document.getElementById('progressTitle').textContent = titles[2];
+        document.getElementById('progressDesc').textContent = descs[2];
+        document.getElementById('progressSection').classList.add('hidden');
+        document.getElementById('line2').className = 'ml-[21px] h-6 w-0.5 bg-green-500 transition-all duration-500';
+
+        setStep(2);
+        setProgress(100);
+        document.getElementById('actionSection').classList.remove('hidden');
+      }, 7000);
+    }
+
+    function setStep(step) {
+      const dots = [document.getElementById('dot1'), document.getElementById('dot2'), document.getElementById('dot3')];
+      const labels = [document.getElementById('label1'), document.getElementById('label2'), document.getElementById('label3')];
+      const descs = [document.getElementById('desc1'), document.getElementById('desc2'), document.getElementById('desc3')];
+      const stepEls = [document.getElementById('step1'), document.getElementById('step2'), document.getElementById('step3')];
+      const icons = [
+        '<i class="fa-solid fa-check"></i>',
+        '<i class="fa-regular fa-robot"></i>',
+        '<i class="fa-regular fa-circle-check"></i>'
+      ];
+
+      for (let i = 0; i < 3; i++) {
+        if (i < step) {
+          dots[i].className = 'w-11 h-11 rounded-full bg-green-500 flex items-center justify-center text-white text-lg shrink-0 transition-all duration-300';
+          dots[i].innerHTML = '<i class="fa-solid fa-check"></i>';
+          labels[i].className = 'text-sm font-semibold text-green-600';
+          stepEls[i].style.opacity = '1';
+        } else if (i === step) {
+          dots[i].className = 'w-11 h-11 rounded-full bg-blue-500 flex items-center justify-center text-white text-lg shrink-0 transition-all duration-300';
+          dots[i].innerHTML = step === 1 ? '<i class="fa-solid fa-circle-notch animate-spin"></i>' : icons[i];
+          labels[i].className = 'text-sm font-semibold text-blue-600';
+          stepEls[i].style.opacity = '1';
+        } else {
+          dots[i].className = 'w-11 h-11 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 text-lg shrink-0 transition-all duration-300';
+          dots[i].innerHTML = icons[i];
+          labels[i].className = 'text-sm text-gray-400';
+          stepEls[i].style.opacity = '0.5';
+        }
+      }
+    }
+
+    function setProgress(pct) {
+      document.getElementById('progressBar').style.width = pct + '%';
+      const remaining = Math.max(1, Math.ceil((100 - pct) / 20));
+      document.getElementById('progressTime').textContent = '预计剩余 ' + remaining + ' 分钟';
+    }
+  </script>
+</body>
+</html>

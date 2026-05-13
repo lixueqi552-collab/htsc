@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>评分规则</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body { font-family: 'Microsoft YaHei', -apple-system, sans-serif; }
+    .rule-card { transition: all .2s; }
+    .rule-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,.06); }
+  </style>
+</head>
+<body class="bg-gray-50 p-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h2 class="text-lg font-semibold text-gray-800">评分规则管理</h2>
+      <p class="text-xs text-gray-500 mt-0.5">管理和配置合同评分的维度、权重与评分标准</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <button class="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-600 hover:bg-gray-50 transition flex items-center gap-1">
+        <i class="fa-regular fa-arrow-rotate-right"></i>重置
+      </button>
+      <button onclick="document.getElementById('addRuleModal').classList.remove('hidden')" class="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-600 transition flex items-center gap-2">
+        <i class="fa-solid fa-plus"></i>新增规则
+      </button>
+    </div>
+  </div>
+
+  <!-- 总分与结构概览 -->
+  <div class="grid grid-cols-6 gap-4 mb-6">
+    <div class="bg-white rounded-lg border border-gray-200 p-4 col-span-1 flex flex-col items-center justify-center">
+      <p class="text-3xl font-bold text-blue-600">100</p>
+      <p class="text-xs text-gray-500 mt-1">总分</p>
+    </div>
+    <div class="bg-white rounded-lg border border-gray-200 p-4 col-span-1 flex flex-col items-center justify-center">
+      <p class="text-2xl font-bold text-gray-800">6</p>
+      <p class="text-xs text-gray-500 mt-1">评分维度</p>
+    </div>
+    <div class="bg-white rounded-lg border border-gray-200 p-4 col-span-1 flex flex-col items-center justify-center">
+      <p class="text-2xl font-bold text-gray-800">14</p>
+      <p class="text-xs text-gray-500 mt-1">评分规则</p>
+    </div>
+    <div class="bg-white rounded-lg border border-gray-200 p-4 col-span-1 flex flex-col items-center justify-center">
+      <p class="text-2xl font-bold text-gray-800">8</p>
+      <p class="text-xs text-gray-500 mt-1">已启用</p>
+    </div>
+    <div class="bg-white rounded-lg border border-gray-200 p-4 col-span-1 flex flex-col items-center justify-center">
+      <p class="text-2xl font-bold text-gray-800">6</p>
+      <p class="text-xs text-gray-500 mt-1">未启用</p>
+    </div>
+    <div class="bg-white rounded-lg border border-gray-200 p-4 col-span-1 flex flex-col items-center justify-center">
+      <p class="text-2xl font-bold text-gray-800">78.3</p>
+      <p class="text-xs text-gray-500 mt-1">平均分</p>
+    </div>
+  </div>
+
+  <!-- 维度权重分布 -->
+  <div class="bg-white rounded-lg border border-gray-200 p-5 mb-6">
+    <div class="flex items-center justify-between mb-4">
+      <h4 class="text-sm font-semibold text-gray-700 flex items-center gap-2">
+        <i class="fa-solid fa-chart-pie text-blue-500"></i>评分维度权重分布
+      </h4>
+      <span class="text-xs text-gray-400">总分 100 分</span>
+    </div>
+    <div class="space-y-2.5">
+      <div class="flex items-center gap-3">
+        <span class="text-xs text-gray-500 w-20">条款完整性</span>
+        <div class="flex-1 h-5 bg-gray-100 rounded-full overflow-hidden">
+          <div class="h-full bg-blue-400 rounded-full flex items-center justify-end px-2 text-[10px] text-white font-medium" style="width:25%">25</div>
+        </div>
+        <span class="text-xs text-gray-400 w-8 text-right">25%</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-xs text-gray-500 w-20">风险控制</span>
+        <div class="flex-1 h-5 bg-gray-100 rounded-full overflow-hidden">
+          <div class="h-full bg-red-400 rounded-full flex items-center justify-end px-2 text-[10px] text-white font-medium" style="width:20%">20</div>
+        </div>
+        <span class="text-xs text-gray-400 w-8 text-right">20%</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-xs text-gray-500 w-20">合规性</span>
+        <div class="flex-1 h-5 bg-gray-100 rounded-full overflow-hidden">
+          <div class="h-full bg-emerald-400 rounded-full flex items-center justify-end px-2 text-[10px] text-white font-medium" style="width:20%">20</div>
+        </div>
+        <span class="text-xs text-gray-400 w-8 text-right">20%</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-xs text-gray-500 w-20">权利义务</span>
+        <div class="flex-1 h-5 bg-gray-100 rounded-full overflow-hidden">
+          <div class="h-full bg-purple-400 rounded-full flex items-center justify-end px-2 text-[10px] text-white font-medium" style="width:15%">15</div>
+        </div>
+        <span class="text-xs text-gray-400 w-8 text-right">15%</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-xs text-gray-500 w-20">合同主体</span>
+        <div class="flex-1 h-5 bg-gray-100 rounded-full overflow-hidden">
+          <div class="h-full bg-yellow-400 rounded-full flex items-center justify-end px-2 text-[10px] text-white font-medium" style="width:10%">10</div>
+        </div>
+        <span class="text-xs text-gray-400 w-8 text-right">10%</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-xs text-gray-500 w-20">知识产权</span>
+        <div class="flex-1 h-5 bg-gray-100 rounded-full overflow-hidden">
+          <div class="h-full bg-cyan-400 rounded-full flex items-center justify-end px-2 text-[10px] text-white font-medium" style="width:10%">10</div>
+        </div>
+        <span class="text-xs text-gray-400 w-8 text-right">10%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category Tabs -->
+  <div class="flex items-center gap-2 mb-5">
+    <button class="px-4 py-1.5 text-sm bg-blue-500 text-white rounded-full font-medium">全部</button>
+    <button class="px-4 py-1.5 text-sm bg-white border border-gray-300 text-gray-600 rounded-full hover:bg-gray-50">条款完整性</button>
+    <button class="px-4 py-1.5 text-sm bg-white border border-gray-300 text-gray-600 rounded-full hover:bg-gray-50">风险控制</button>
+    <button class="px-4 py-1.5 text-sm bg-white border border-gray-300 text-gray-600 rounded-full hover:bg-gray-50">合规性</button>
+    <button class="px-4 py-1.5 text-sm bg-white border border-gray-300 text-gray-600 rounded-full hover:bg-gray-50">权利义务</button>
+    <button class="px-4 py-1.5 text-sm bg-white border border-gray-300 text-gray-600 rounded-full hover:bg-gray-50">合同主体</button>
+    <button class="px-4 py-1.5 text-sm bg-white border border-gray-300 text-gray-600 rounded-full hover:bg-gray-50">知识产权</button>
+  </div>
+
+  <!-- Rule Cards -->
+  <div class="grid grid-cols-2 gap-4">
+    <div class="rule-card bg-white rounded-lg border border-gray-200 p-5">
+      <div class="flex items-start justify-between mb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center text-base">
+            <i class="fa-solid fa-list-check"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-gray-800">必备条款完整性检查</h4>
+            <span class="text-[10px] text-gray-400">条款完整性 · 权重 15%</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1">
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:text-blue-500 hover:bg-blue-50"><i class="fa-regular fa-pen-to-square text-xs"></i></button>
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:text-red-500 hover:bg-red-50"><i class="fa-regular fa-trash-can text-xs"></i></button>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 mb-2">检查合同是否包含价格条款、交付条款、违约责任、争议解决、保密等必备条款。</p>
+      <div class="bg-gray-50 rounded px-3 py-2 mb-3">
+        <p class="text-[10px] text-gray-400 mb-1">评分细则：</p>
+        <div class="space-y-1">
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">价格/费用条款明确</span>
+            <span class="text-gray-400">3 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">交付/履行期限明确</span>
+            <span class="text-gray-400">3 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">违约责任条款明确</span>
+            <span class="text-gray-400">3 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">争议解决条款明确</span>
+            <span class="text-gray-400">3 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">保密条款明确</span>
+            <span class="text-gray-400">3 分</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center justify-between text-xs">
+        <div class="flex items-center gap-3">
+          <span class="text-gray-400"><i class="fa-regular fa-star text-yellow-400 mr-1"></i>分值：15</span>
+          <span class="text-gray-400"><i class="fa-regular fa-clock mr-1"></i>2026-05-10</span>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" checked class="sr-only peer">
+          <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all"></div>
+        </label>
+      </div>
+    </div>
+
+    <div class="rule-card bg-white rounded-lg border border-gray-200 p-5">
+      <div class="flex items-start justify-between mb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center text-base">
+            <i class="fa-solid fa-file-signature"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-gray-800">签章与生效要件检查</h4>
+            <span class="text-[10px] text-gray-400">条款完整性 · 权重 10%</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1">
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:text-blue-500 hover:bg-blue-50"><i class="fa-regular fa-pen-to-square text-xs"></i></button>
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:text-red-500 hover:bg-red-50"><i class="fa-regular fa-trash-can text-xs"></i></button>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 mb-2">检查合同签章、生效条件、签署日期等要件是否完整合法。</p>
+      <div class="bg-gray-50 rounded px-3 py-2 mb-3">
+        <p class="text-[10px] text-gray-400 mb-1">评分细则：</p>
+        <div class="space-y-1">
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">双方签章齐全</span>
+            <span class="text-gray-400">3 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">生效条件/日期明确</span>
+            <span class="text-gray-400">3 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">合同期限/有效期明确</span>
+            <span class="text-gray-400">2 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">签署地点/方式合规</span>
+            <span class="text-gray-400">2 分</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center justify-between text-xs">
+        <div class="flex items-center gap-3">
+          <span class="text-gray-400"><i class="fa-regular fa-star text-yellow-400 mr-1"></i>分值：10</span>
+          <span class="text-gray-400"><i class="fa-regular fa-clock mr-1"></i>2026-05-08</span>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" checked class="sr-only peer">
+          <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all"></div>
+        </label>
+      </div>
+    </div>
+
+    <div class="rule-card bg-white rounded-lg border border-gray-200 p-5">
+      <div class="flex items-start justify-between mb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-red-50 text-red-500 flex items-center justify-center text-base">
+            <i class="fa-solid fa-shield"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-gray-800">不公平风险条款识别</h4>
+            <span class="text-[10px] text-gray-400">风险控制 · 权重 12%</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1">
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:text-blue-500 hover:bg-blue-50"><i class="fa-regular fa-pen-to-square text-xs"></i></button>
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:text-red-500 hover:bg-red-50"><i class="fa-regular fa-trash-can text-xs"></i></button>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 mb-2">识别合同中是否存在不公平风险条款，如无限责任、单方解约权、过高违约金等。</p>
+      <div class="bg-gray-50 rounded px-3 py-2 mb-3">
+        <p class="text-[10px] text-gray-400 mb-1">评分细则：</p>
+        <div class="space-y-1">
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">无单方任意解约权</span>
+            <span class="text-gray-400">3 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">违约金比例合理（≤30%）</span>
+            <span class="text-gray-400">3 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">无无限责任条款</span>
+            <span class="text-gray-400">3 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">赔偿上限合理</span>
+            <span class="text-gray-400">3 分</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center justify-between text-xs">
+        <div class="flex items-center gap-3">
+          <span class="text-gray-400"><i class="fa-regular fa-star text-yellow-400 mr-1"></i>分值：12</span>
+          <span class="text-gray-400"><i class="fa-regular fa-clock mr-1"></i>2026-05-09</span>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" checked class="sr-only peer">
+          <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all"></div>
+        </label>
+      </div>
+    </div>
+
+    <div class="rule-card bg-white rounded-lg border border-gray-200 p-5">
+      <div class="flex items-start justify-between mb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-red-50 text-red-500 flex items-center justify-center text-base">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-gray-800">违约责任对等性检查</h4>
+            <span class="text-[10px] text-gray-400">风险控制 · 权重 8%</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1">
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:text-blue-500 hover:bg-blue-50"><i class="fa-regular fa-pen-to-square text-xs"></i></button>
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:text-red-500 hover:bg-red-50"><i class="fa-regular fa-trash-can text-xs"></i></button>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 mb-2">检查双方违约责任是否对等，是否存在单方加重对方责任的情形。</p>
+      <div class="bg-gray-50 rounded px-3 py-2 mb-3">
+        <p class="text-[10px] text-gray-400 mb-1">评分细则：</p>
+        <div class="space-y-1">
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">双方违约金比例对等</span>
+            <span class="text-gray-400">3 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">责任限制双向适用</span>
+            <span class="text-gray-400">3 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">赔偿范围双向一致</span>
+            <span class="text-gray-400">2 分</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center justify-between text-xs">
+        <div class="flex items-center gap-3">
+          <span class="text-gray-400"><i class="fa-regular fa-star text-yellow-400 mr-1"></i>分值：8</span>
+          <span class="text-gray-400"><i class="fa-regular fa-clock mr-1"></i>2026-05-07</span>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" checked class="sr-only peer">
+          <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all"></div>
+        </label>
+      </div>
+    </div>
+
+    <div class="rule-card bg-white rounded-lg border border-gray-200 p-5">
+      <div class="flex items-start justify-between mb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center text-base">
+            <i class="fa-solid fa-scale-balanced"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-gray-800">法律法规合规性审查</h4>
+            <span class="text-[10px] text-gray-400">合规性 · 权重 12%</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1">
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:text-blue-500 hover:bg-blue-50"><i class="fa-regular fa-pen-to-square text-xs"></i></button>
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:text-red-500 hover:bg-red-50"><i class="fa-regular fa-trash-can text-xs"></i></button>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 mb-2">检查合同条款是否符合《民法典》及相关法律法规要求，是否存在违法条款。</p>
+      <div class="bg-gray-50 rounded px-3 py-2 mb-3">
+        <p class="text-[10px] text-gray-400 mb-1">评分细则：</p>
+        <div class="space-y-1">
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">不违反法律强制性规定</span>
+            <span class="text-gray-400">4 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">格式条款合规（提示说明）</span>
+            <span class="text-gray-400">3 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">行业特殊监管合规</span>
+            <span class="text-gray-400">3 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">跨境合规（如适用）</span>
+            <span class="text-gray-400">2 分</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center justify-between text-xs">
+        <div class="flex items-center gap-3">
+          <span class="text-gray-400"><i class="fa-regular fa-star text-yellow-400 mr-1"></i>分值：12</span>
+          <span class="text-gray-400"><i class="fa-regular fa-clock mr-1"></i>2026-05-08</span>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" checked class="sr-only peer">
+          <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all"></div>
+        </label>
+      </div>
+    </div>
+
+    <div class="rule-card bg-white rounded-lg border border-gray-200 p-5">
+      <div class="flex items-start justify-between mb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center text-base">
+            <i class="fa-solid fa-database"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-gray-800">数据合规与隐私保护</h4>
+            <span class="text-[10px] text-gray-400">合规性 · 权重 8%</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1">
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:text-blue-500 hover:bg-blue-50"><i class="fa-regular fa-pen-to-square text-xs"></i></button>
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:text-red-500 hover:bg-red-50"><i class="fa-regular fa-trash-can text-xs"></i></button>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 mb-2">检查合同中的数据保护、隐私政策、个人信息处理等条款的合规性。</p>
+      <div class="bg-gray-50 rounded px-3 py-2 mb-3">
+        <p class="text-[10px] text-gray-400 mb-1">评分细则：</p>
+        <div class="space-y-1">
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">数据处理目的/范围明确</span>
+            <span class="text-gray-400">2 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">数据安全措施约定</span>
+            <span class="text-gray-400">2 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">个人信息保护合规</span>
+            <span class="text-gray-400">2 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">数据跨境传输合规</span>
+            <span class="text-gray-400">2 分</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center justify-between text-xs">
+        <div class="flex items-center gap-3">
+          <span class="text-gray-400"><i class="fa-regular fa-star text-yellow-400 mr-1"></i>分值：8</span>
+          <span class="text-gray-400"><i class="fa-regular fa-clock mr-1"></i>2026-05-06</span>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" class="sr-only peer">
+          <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all"></div>
+        </label>
+      </div>
+    </div>
+
+    <div class="rule-card bg-white rounded-lg border border-gray-200 p-5">
+      <div class="flex items-start justify-between mb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-purple-50 text-purple-500 flex items-center justify-center text-base">
+            <i class="fa-solid fa-handshake"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-gray-800">权利义务对等性评估</h4>
+            <span class="text-[10px] text-gray-400">权利义务 · 权重 15%</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1">
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:text-blue-500 hover:bg-blue-50"><i class="fa-regular fa-pen-to-square text-xs"></i></button>
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:text-red-500 hover:bg-red-50"><i class="fa-regular fa-trash-can text-xs"></i></button>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 mb-2">评估合同双方权利义务是否对等，是否存在明显偏向一方的条款。</p>
+      <div class="bg-gray-50 rounded px-3 py-2 mb-3">
+        <p class="text-[10px] text-gray-400 mb-1">评分细则：</p>
+        <div class="space-y-1">
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">付款条件公平合理</span>
+            <span class="text-gray-400">4 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">交付/验收标准对等</span>
+            <span class="text-gray-400">4 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">变更/解除权对等</span>
+            <span class="text-gray-400">4 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">通知/协助义务对等</span>
+            <span class="text-gray-400">3 分</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center justify-between text-xs">
+        <div class="flex items-center gap-3">
+          <span class="text-gray-400"><i class="fa-regular fa-star text-yellow-400 mr-1"></i>分值：15</span>
+          <span class="text-gray-400"><i class="fa-regular fa-clock mr-1"></i>2026-05-07</span>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" checked class="sr-only peer">
+          <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all"></div>
+        </label>
+      </div>
+    </div>
+
+    <div class="rule-card bg-white rounded-lg border border-gray-200 p-5">
+      <div class="flex items-start justify-between mb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-purple-50 text-purple-500 flex items-center justify-center text-base">
+            <i class="fa-solid fa-gavel"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-gray-800">争议解决条款评估</h4>
+            <span class="text-[10px] text-gray-400">权利义务 · 权重 10%</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1">
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:text-blue-500 hover:bg-blue-50"><i class="fa-regular fa-pen-to-square text-xs"></i></button>
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:text-red-500 hover:bg-red-50"><i class="fa-regular fa-trash-can text-xs"></i></button>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 mb-2">检查争议解决条款的明确性、合理性和可执行性。</p>
+      <div class="bg-gray-50 rounded px-3 py-2 mb-3">
+        <p class="text-[10px] text-gray-400 mb-1">评分细则：</p>
+        <div class="space-y-1">
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">争议解决方式明确</span>
+            <span class="text-gray-400">3 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">管辖法院/仲裁机构明确</span>
+            <span class="text-gray-400">3 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">管辖地对己方有利</span>
+            <span class="text-gray-400">2 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">仲裁条款效力合规</span>
+            <span class="text-gray-400">2 分</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center justify-between text-xs">
+        <div class="flex items-center gap-3">
+          <span class="text-gray-400"><i class="fa-regular fa-star text-yellow-400 mr-1"></i>分值：10</span>
+          <span class="text-gray-400"><i class="fa-regular fa-clock mr-1"></i>2026-05-05</span>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" class="sr-only peer">
+          <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all"></div>
+        </label>
+      </div>
+    </div>
+
+    <div class="rule-card bg-white rounded-lg border border-gray-200 p-5">
+      <div class="flex items-start justify-between mb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-yellow-50 text-yellow-500 flex items-center justify-center text-base">
+            <i class="fa-solid fa-building"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-gray-800">合同主体资格审查</h4>
+            <span class="text-[10px] text-gray-400">合同主体 · 权重 10%</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1">
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:text-blue-500 hover:bg-blue-50"><i class="fa-regular fa-pen-to-square text-xs"></i></button>
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:text-red-500 hover:bg-red-50"><i class="fa-regular fa-trash-can text-xs"></i></button>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 mb-2">检查合同签约主体的合法性、资质和履约能力。</p>
+      <div class="bg-gray-50 rounded px-3 py-2 mb-3">
+        <p class="text-[10px] text-gray-400 mb-1">评分细则：</p>
+        <div class="space-y-1">
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">主体信息完整准确</span>
+            <span class="text-gray-400">3 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">经营范围涵盖合同业务</span>
+            <span class="text-gray-400">3 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">特殊经营资质齐全</span>
+            <span class="text-gray-400">2 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">授权代表权限适当</span>
+            <span class="text-gray-400">2 分</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center justify-between text-xs">
+        <div class="flex items-center gap-3">
+          <span class="text-gray-400"><i class="fa-regular fa-star text-yellow-400 mr-1"></i>分值：10</span>
+          <span class="text-gray-400"><i class="fa-regular fa-clock mr-1"></i>2026-05-04</span>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" checked class="sr-only peer">
+          <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all"></div>
+        </label>
+      </div>
+    </div>
+
+    <div class="rule-card bg-white rounded-lg border border-gray-200 p-5">
+      <div class="flex items-start justify-between mb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-yellow-50 text-yellow-500 flex items-center justify-center text-base">
+            <i class="fa-solid fa-people-arrows"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-gray-800">关联方/代理关系审查</h4>
+            <span class="text-[10px] text-gray-400">合同主体 · 权重 5%</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1">
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:text-blue-500 hover:bg-blue-50"><i class="fa-regular fa-pen-to-square text-xs"></i></button>
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:text-red-500 hover:bg-red-50"><i class="fa-regular fa-trash-can text-xs"></i></button>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 mb-2">检查合同中的代理权限、关联方关系和利益冲突披露。</p>
+      <div class="bg-gray-50 rounded px-3 py-2 mb-3">
+        <p class="text-[10px] text-gray-400 mb-1">评分细则：</p>
+        <div class="space-y-1">
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">代理人权限明确</span>
+            <span class="text-gray-400">2 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">关联关系已披露</span>
+            <span class="text-gray-400">2 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">无利益冲突</span>
+            <span class="text-gray-400">1 分</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center justify-between text-xs">
+        <div class="flex items-center gap-3">
+          <span class="text-gray-400"><i class="fa-regular fa-star text-yellow-400 mr-1"></i>分值：5</span>
+          <span class="text-gray-400"><i class="fa-regular fa-clock mr-1"></i>2026-05-03</span>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" class="sr-only peer">
+          <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all"></div>
+        </label>
+      </div>
+    </div>
+
+    <div class="rule-card bg-white rounded-lg border border-gray-200 p-5">
+      <div class="flex items-start justify-between mb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-cyan-50 text-cyan-500 flex items-center justify-center text-base">
+            <i class="fa-solid fa-copyright"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-gray-800">知识产权归属审查</h4>
+            <span class="text-[10px] text-gray-400">知识产权 · 权重 6%</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1">
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:text-blue-500 hover:bg-blue-50"><i class="fa-regular fa-pen-to-square text-xs"></i></button>
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:text-red-500 hover:bg-red-50"><i class="fa-regular fa-trash-can text-xs"></i></button>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 mb-2">审查知识产权归属、许可范围、侵权责任等条款的明确性。</p>
+      <div class="bg-gray-50 rounded px-3 py-2 mb-3">
+        <p class="text-[10px] text-gray-400 mb-1">评分细则：</p>
+        <div class="space-y-1">
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">知识产权归属明确</span>
+            <span class="text-gray-400">2 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">许可范围/期限明确</span>
+            <span class="text-gray-400">2 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">侵权赔偿责任约定</span>
+            <span class="text-gray-400">2 分</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center justify-between text-xs">
+        <div class="flex items-center gap-3">
+          <span class="text-gray-400"><i class="fa-regular fa-star text-yellow-400 mr-1"></i>分值：6</span>
+          <span class="text-gray-400"><i class="fa-regular fa-clock mr-1"></i>2026-05-02</span>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" checked class="sr-only peer">
+          <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all"></div>
+        </label>
+      </div>
+    </div>
+
+    <div class="rule-card bg-white rounded-lg border border-gray-200 p-5">
+      <div class="flex items-start justify-between mb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-cyan-50 text-cyan-500 flex items-center justify-center text-base">
+            <i class="fa-solid fa-file-contract"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-gray-800">技术成果归属审查</h4>
+            <span class="text-[10px] text-gray-400">知识产权 · 权重 4%</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1">
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:text-blue-500 hover:bg-blue-50"><i class="fa-regular fa-pen-to-square text-xs"></i></button>
+          <button class="w-7 h-7 flex items-center justify-center rounded text-gray-400 hover:text-red-500 hover:bg-red-50"><i class="fa-regular fa-trash-can text-xs"></i></button>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 mb-2">审查技术开发、委托创作等场景下的技术成果归属与使用权限。</p>
+      <div class="bg-gray-50 rounded px-3 py-2 mb-3">
+        <p class="text-[10px] text-gray-400 mb-1">评分细则：</p>
+        <div class="space-y-1">
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">背景知识产权归属明确</span>
+            <span class="text-gray-400">1 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">前景知识产权归属明确</span>
+            <span class="text-gray-400">2 分</span>
+          </div>
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="text-gray-500">后续改进权利约定</span>
+            <span class="text-gray-400">1 分</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center justify-between text-xs">
+        <div class="flex items-center gap-3">
+          <span class="text-gray-400"><i class="fa-regular fa-star text-yellow-400 mr-1"></i>分值：4</span>
+          <span class="text-gray-400"><i class="fa-regular fa-clock mr-1"></i>2026-04-30</span>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" class="sr-only peer">
+          <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all"></div>
+        </label>
+      </div>
+    </div>
+  </div>
+  <!-- Modal Overlay -->
+  <div id="addRuleModal" class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center" onclick="if(event.target===this)this.classList.add('hidden')">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-xl max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+        <h3 class="text-base font-semibold text-gray-800">新增评分规则</h3>
+        <button onclick="document.getElementById('addRuleModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 text-lg leading-none">&times;</button>
+      </div>
+      <div class="p-6 space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">规则名称 <span class="text-red-500">*</span></label>
+          <input type="text" placeholder="请输入规则名称" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">所属分类 <span class="text-red-500">*</span></label>
+          <select class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option>条款完整性</option><option>风险控制</option><option>合规性</option>
+            <option>权利义务</option><option>合同主体</option><option>知识产权</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">规则描述</label>
+          <textarea rows="3" placeholder="请输入规则描述" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">权重 (%)</label>
+            <input type="range" min="1" max="50" value="10" class="w-full" oninput="this.nextElementSibling.textContent=this.value+'%'">
+            <span class="text-xs text-gray-500">10%</span>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">满分</label>
+            <input type="number" value="100" min="1" max="1000" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">评分标准</label>
+          <div class="space-y-2" id="criteriaList">
+            <div class="flex gap-2">
+              <input placeholder="标准名称" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <input type="number" placeholder="分值" min="0" max="100" class="w-20 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <button onclick="this.parentElement.remove()" class="text-red-400 hover:text-red-600 px-2 text-sm"><i class="fa-regular fa-trash-can"></i></button>
+            </div>
+          </div>
+          <button onclick="var c=document.getElementById('criteriaList');var d=document.createElement('div');d.className='flex gap-2';d.innerHTML='<input placeholder=\\'标准名称\\' class=\\'flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500\\'><input type=\\'number\\' placeholder=\\'分值\\' min=\\'0\\' max=\\'100\\' class=\\'w-20 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500\\'><button onclick=\\'this.parentElement.remove()\\' class=\\'text-red-400 hover:text-red-600 px-2 text-sm\\'><i class=\\'fa-regular fa-trash-can\\'></i></button>';c.appendChild(d)" class="mt-2 text-sm text-blue-500 hover:text-blue-600"><i class="fa-solid fa-plus mr-1"></i>添加标准</button>
+        </div>
+      </div>
+      <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-100 bg-gray-50">
+        <button onclick="document.getElementById('addRuleModal').classList.add('hidden')" class="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-600 hover:bg-gray-50">取消</button>
+        <button onclick="document.getElementById('addRuleModal').classList.add('hidden');alert('评分规则添加成功')" class="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600">确认添加</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

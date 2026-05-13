@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>参考知识库</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body { font-family: 'Microsoft YaHei', -apple-system, sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-50 p-6">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h2 class="text-lg font-semibold text-gray-800">参考知识库</h2>
+      <p class="text-xs text-gray-500 mt-0.5">行业参考合同模板与标准条款资源库</p>
+    </div>
+    <button class="px-3 py-2 bg-blue-500 text-white rounded-lg text-xs font-medium hover:bg-blue-600 flex items-center gap-1"><i class="fa-solid fa-plus"></i>新增参考</button>
+  </div>
+
+  <!-- Tabs -->
+  <div class="flex items-center gap-4 mb-5 border-b border-gray-200">
+    <button class="px-1 py-3 text-sm font-medium text-blue-500 border-b-2 border-blue-500 -mb-[1px]">行业模板</button>
+    <button class="px-1 py-3 text-sm text-gray-500 hover:text-gray-700">标准条款库</button>
+    <button class="px-1 py-3 text-sm text-gray-500 hover:text-gray-700">合同范本</button>
+    <button class="px-1 py-3 text-sm text-gray-500 hover:text-gray-700">审查指南</button>
+  </div>
+
+  <!-- Search -->
+  <div class="bg-white rounded-lg border border-gray-200 p-3 mb-5">
+    <div class="flex items-center gap-3">
+      <div class="relative flex-1">
+        <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+        <input type="text" placeholder="搜索参考资源..." class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-500">
+        <option>全部分类</option>
+        <option>采购合同</option>
+        <option>销售合同</option>
+        <option>服务合同</option>
+        <option>租赁合同</option>
+      </select>
+      <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-500">
+        <option>全部行业</option>
+        <option>制造业</option>
+        <option>IT/互联网</option>
+        <option>建筑业</option>
+        <option>金融业</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Grid -->
+  <div class="grid grid-cols-3 gap-4">
+    <div class="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition cursor-pointer">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center">
+          <i class="fa-solid fa-file-contract"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h4 class="text-sm font-semibold text-gray-800 truncate">设备采购合同标准模板</h4>
+          <span class="text-[10px] text-gray-400">制造业 · 采购合同</span>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 line-clamp-2 mb-3">适用于大型设备采购的标准合同模板，包含技术规格、安装调试、验收、质保等完整条款。</p>
+      <div class="flex items-center justify-between text-xs text-gray-400">
+        <span><i class="fa-regular fa-download mr-1"></i>下载 234次</span>
+        <span><i class="fa-regular fa-star mr-1"></i>4.8</span>
+      </div>
+    </div>
+    <div class="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition cursor-pointer">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 rounded-lg bg-purple-50 text-purple-500 flex items-center justify-center">
+          <i class="fa-solid fa-handshake"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h4 class="text-sm font-semibold text-gray-800 truncate">IT服务外包合同范本</h4>
+          <span class="text-[10px] text-gray-400">IT/互联网 · 服务合同</span>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 line-clamp-2 mb-3">IT服务外包合同范本，包含服务级别协议(SLA)、数据安全、知识产权归属等条款。</p>
+      <div class="flex items-center justify-between text-xs text-gray-400">
+        <span><i class="fa-regular fa-download mr-1"></i>下载 189次</span>
+        <span><i class="fa-regular fa-star mr-1"></i>4.6</span>
+      </div>
+    </div>
+    <div class="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition cursor-pointer">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center">
+          <i class="fa-solid fa-building"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h4 class="text-sm font-semibold text-gray-800 truncate">商业办公楼租赁合同</h4>
+          <span class="text-[10px] text-gray-400">房地产业 · 租赁合同</span>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 line-clamp-2 mb-3">商业办公楼租赁标准合同，含租金调整机制、装修管理、续租优先权等条款。</p>
+      <div class="flex items-center justify-between text-xs text-gray-400">
+        <span><i class="fa-regular fa-download mr-1"></i>下载 156次</span>
+        <span><i class="fa-regular fa-star mr-1"></i>4.7</span>
+      </div>
+    </div>
+    <div class="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition cursor-pointer">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 rounded-lg bg-yellow-50 text-yellow-500 flex items-center justify-center">
+          <i class="fa-solid fa-truck"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h4 class="text-sm font-semibold text-gray-800 truncate">原材料供货框架协议</h4>
+          <span class="text-[10px] text-gray-400">制造业 · 采购合同</span>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 line-clamp-2 mb-3">年度原材料供货框架协议模板，含价格调整机制、最低供货量、质量控制等条款。</p>
+      <div class="flex items-center justify-between text-xs text-gray-400">
+        <span><i class="fa-regular fa-download mr-1"></i>下载 128次</span>
+        <span><i class="fa-regular fa-star mr-1"></i>4.5</span>
+      </div>
+    </div>
+    <div class="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition cursor-pointer">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 rounded-lg bg-red-50 text-red-500 flex items-center justify-center">
+          <i class="fa-solid fa-file-shield"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h4 class="text-sm font-semibold text-gray-800 truncate">保密协议（NDA）标准版</h4>
+          <span class="text-[10px] text-gray-400">通用 · 保密协议</span>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 line-clamp-2 mb-3">双向保密协议标准版本，适用于商务合作中的保密信息保护。</p>
+      <div class="flex items-center justify-between text-xs text-gray-400">
+        <span><i class="fa-regular fa-download mr-1"></i>下载 312次</span>
+        <span><i class="fa-regular fa-star mr-1"></i>4.9</span>
+      </div>
+    </div>
+    <div class="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition cursor-pointer">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 rounded-lg bg-cyan-50 text-cyan-500 flex items-center justify-center">
+          <i class="fa-solid fa-code"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h4 class="text-sm font-semibold text-gray-800 truncate">软件开发外包服务合同</h4>
+          <span class="text-[10px] text-gray-400">IT/互联网 · 服务合同</span>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 line-clamp-2 mb-3">软件开发外包服务合同，含交付标准、知识产权归属、源码托管、验收流程等条款。</p>
+      <div class="flex items-center justify-between text-xs text-gray-400">
+        <span><i class="fa-regular fa-download mr-1"></i>下载 167次</span>
+        <span><i class="fa-regular fa-star mr-1"></i>4.4</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

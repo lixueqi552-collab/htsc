@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>审查知识库</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body { font-family: 'Microsoft YaHei', -apple-system, sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-50 p-6">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h2 class="text-lg font-semibold text-gray-800">审查知识库</h2>
+      <p class="text-xs text-gray-500 mt-0.5">管理合同审查相关的法规、条款模板和审查要点</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <button class="px-3 py-2 border border-gray-300 rounded-lg text-xs text-gray-600 hover:bg-gray-50"><i class="fa-regular fa-upload mr-1"></i>导入</button>
+      <button onclick="document.getElementById('addItemModal').classList.remove('hidden')" class="px-3 py-2 bg-blue-500 text-white rounded-lg text-xs font-medium hover:bg-blue-600 flex items-center gap-1"><i class="fa-solid fa-plus"></i>新增条目</button>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-4 gap-5">
+    <!-- Categories -->
+    <div class="col-span-1">
+      <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+        <div class="px-4 py-3 border-b border-gray-100 bg-gray-50">
+          <h4 class="text-xs font-semibold text-gray-600 uppercase tracking-wider">分类</h4>
+        </div>
+        <div class="divide-y divide-gray-50 text-sm">
+          <div class="px-4 py-2.5 bg-blue-50 text-blue-600 font-medium flex items-center justify-between cursor-pointer">
+            <span><i class="fa-regular fa-folder-open mr-2"></i>全部条目</span>
+            <span class="text-xs bg-blue-100 px-1.5 py-0.5 rounded">24</span>
+          </div>
+          <div class="px-4 py-2.5 text-gray-600 hover:bg-gray-50 flex items-center justify-between cursor-pointer">
+            <span><i class="fa-regular fa-folder mr-2"></i>法律法规</span>
+            <span class="text-xs bg-gray-100 px-1.5 py-0.5 rounded">8</span>
+          </div>
+          <div class="px-4 py-2.5 text-gray-600 hover:bg-gray-50 flex items-center justify-between cursor-pointer">
+            <span><i class="fa-regular fa-folder mr-2"></i>条款模板</span>
+            <span class="text-xs bg-gray-100 px-1.5 py-0.5 rounded">6</span>
+          </div>
+          <div class="px-4 py-2.5 text-gray-600 hover:bg-gray-50 flex items-center justify-between cursor-pointer">
+            <span><i class="fa-regular fa-folder mr-2"></i>审查要点</span>
+            <span class="text-xs bg-gray-100 px-1.5 py-0.5 rounded">5</span>
+          </div>
+          <div class="px-4 py-2.5 text-gray-600 hover:bg-gray-50 flex items-center justify-between cursor-pointer">
+            <span><i class="fa-regular fa-folder mr-2"></i>典型案例</span>
+            <span class="text-xs bg-gray-100 px-1.5 py-0.5 rounded">3</span>
+          </div>
+          <div class="px-4 py-2.5 text-gray-600 hover:bg-gray-50 flex items-center justify-between cursor-pointer">
+            <span><i class="fa-regular fa-folder mr-2"></i>行业规范</span>
+            <span class="text-xs bg-gray-100 px-1.5 py-0.5 rounded">2</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Knowledge List -->
+    <div class="col-span-3 space-y-3">
+      <!-- Search -->
+      <div class="bg-white rounded-lg border border-gray-200 p-3">
+        <div class="flex items-center gap-3">
+          <div class="relative flex-1">
+            <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+            <input type="text" placeholder="搜索知识库内容..." class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+          <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-500">
+            <option>全部分类</option>
+            <option>法律法规</option>
+            <option>条款模板</option>
+            <option>审查要点</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Items -->
+      <div class="bg-white rounded-lg border border-gray-200 divide-y divide-gray-100">
+        <div class="px-5 py-4 hover:bg-gray-50 cursor-pointer">
+          <div class="flex items-start justify-between">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="tag bg-blue-50 text-blue-600 text-[10px] px-1.5 py-0.5 rounded">法律法规</span>
+                <h4 class="text-sm font-medium text-gray-800">《中华人民共和国民法典》第三编 合同</h4>
+              </div>
+              <p class="text-xs text-gray-500">收录民法典合同编全文，涵盖合同的订立、效力、履行、变更、终止及违约责任等核心规定。</p>
+              <p class="text-xs text-gray-400 mt-1.5">更新于 2026-01-15 | 引用次数 45</p>
+            </div>
+            <button class="text-blue-500 text-xs hover:text-blue-600 mt-1"><i class="fa-regular fa-eye mr-1"></i>查看</button>
+          </div>
+        </div>
+        <div class="px-5 py-4 hover:bg-gray-50 cursor-pointer">
+          <div class="flex items-start justify-between">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="tag bg-purple-50 text-purple-600 text-[10px] px-1.5 py-0.5 rounded">条款模板</span>
+                <h4 class="text-sm font-medium text-gray-800">违约责任条款参考模板</h4>
+              </div>
+              <p class="text-xs text-gray-500">提供标准违约责任条款模板，包括违约金计算方式、责任限制、赔偿范围等可选配置。</p>
+              <p class="text-xs text-gray-400 mt-1.5">更新于 2026-04-20 | 引用次数 32</p>
+            </div>
+            <button class="text-blue-500 text-xs hover:text-blue-600 mt-1"><i class="fa-regular fa-eye mr-1"></i>查看</button>
+          </div>
+        </div>
+        <div class="px-5 py-4 hover:bg-gray-50 cursor-pointer">
+          <div class="flex items-start justify-between">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="tag bg-emerald-50 text-emerald-600 text-[10px] px-1.5 py-0.5 rounded">审查要点</span>
+                <h4 class="text-sm font-medium text-gray-800">采购合同审查要点清单</h4>
+              </div>
+              <p class="text-xs text-gray-500">涵盖采购合同审查中需要关注的关键要点，包括价格条款、交付条款、验收标准、质保期等。</p>
+              <p class="text-xs text-gray-400 mt-1.5">更新于 2026-04-15 | 引用次数 28</p>
+            </div>
+            <button class="text-blue-500 text-xs hover:text-blue-600 mt-1"><i class="fa-regular fa-eye mr-1"></i>查看</button>
+          </div>
+        </div>
+        <div class="px-5 py-4 hover:bg-gray-50 cursor-pointer">
+          <div class="flex items-start justify-between">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="tag bg-orange-50 text-orange-600 text-[10px] px-1.5 py-0.5 rounded">典型案例</span>
+                <h4 class="text-sm font-medium text-gray-800">违约金过高调整典型案例（2025）最高法民终XX号</h4>
+              </div>
+              <p class="text-xs text-gray-500">最高人民法院关于违约金过高调整的典型案例，确立违约金不超过损失30%的裁判规则。</p>
+              <p class="text-xs text-gray-400 mt-1.5">更新于 2026-03-10 | 引用次数 19</p>
+            </div>
+            <button class="text-blue-500 text-xs hover:text-blue-600 mt-1"><i class="fa-regular fa-eye mr-1"></i>查看</button>
+          </div>
+        </div>
+        <div class="px-5 py-4 hover:bg-gray-50 cursor-pointer">
+          <div class="flex items-start justify-between">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="tag bg-blue-50 text-blue-600 text-[10px] px-1.5 py-0.5 rounded">法律法规</span>
+                <h4 class="text-sm font-medium text-gray-800">《中华人民共和国招标投标法》</h4>
+              </div>
+              <p class="text-xs text-gray-500">收录招标投标法全文，适用于采购类合同审查中的招投标合规性判断。</p>
+              <p class="text-xs text-gray-400 mt-1.5">更新于 2026-02-20 | 引用次数 16</p>
+            </div>
+            <button class="text-blue-500 text-xs hover:text-blue-600 mt-1"><i class="fa-regular fa-eye mr-1"></i>查看</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="flex items-center justify-between text-xs">
+        <p class="text-gray-400">共 24 条</p>
+        <div class="flex items-center gap-1">
+          <button class="px-2.5 py-1.5 border border-gray-300 rounded bg-white text-gray-500 hover:bg-gray-50" disabled><i class="fa-solid fa-chevron-left"></i></button>
+          <button class="px-3 py-1.5 border border-blue-500 rounded bg-blue-50 text-blue-600 font-medium">1</button>
+          <button class="px-3 py-1.5 border border-gray-300 rounded bg-white text-gray-600 hover:bg-gray-50">2</button>
+          <button class="px-3 py-1.5 border border-gray-300 rounded bg-white text-gray-600 hover:bg-gray-50">3</button>
+          <button class="px-2.5 py-1.5 border border-gray-300 rounded bg-white text-gray-500 hover:bg-gray-50"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal Overlay -->
+  <div id="addItemModal" class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center" onclick="if(event.target===this)this.classList.add('hidden')">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+        <h3 class="text-base font-semibold text-gray-800">新增知识条目</h3>
+        <button onclick="document.getElementById('addItemModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 text-lg leading-none">&times;</button>
+      </div>
+      <div class="p-6 space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">标题 <span class="text-red-500">*</span></label>
+          <input type="text" placeholder="请输入知识条目标题" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">分类 <span class="text-red-500">*</span></label>
+          <select class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option>法律法规</option><option>行业标准</option><option>司法解释</option>
+            <option>合同范本</option><option>审查案例</option><option>审查要点</option>
+            <option>常见风险</option><option>裁判观点</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">内容 <span class="text-red-500">*</span></label>
+          <textarea rows="6" placeholder="请输入知识条目内容" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">标签</label>
+          <input type="text" placeholder="输入标签，多个标签用逗号分隔" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+      </div>
+      <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-100 bg-gray-50">
+        <button onclick="document.getElementById('addItemModal').classList.add('hidden')" class="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-600 hover:bg-gray-50">取消</button>
+        <button onclick="document.getElementById('addItemModal').classList.add('hidden');alert('知识条目添加成功')" class="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600">确认添加</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

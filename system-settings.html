@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>系统设置</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body { font-family: 'Microsoft YaHei', -apple-system, sans-serif; }
+    .settings-tab { cursor: pointer; transition: all .15s; }
+    .settings-tab:hover { background: #f0f7ff; }
+    .settings-tab.active { background: #eff6ff; color: #2563eb; border-right: 2px solid #3b82f6; font-weight: 600; }
+  </style>
+</head>
+<body class="bg-gray-50 p-6">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h2 class="text-lg font-semibold text-gray-800">系统设置</h2>
+      <p class="text-xs text-gray-500 mt-0.5">管理系统基础配置与运行参数</p>
+    </div>
+    <button class="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 transition flex items-center gap-2" onclick="alert('设置已保存')">
+      <i class="fa-regular fa-floppy-disk"></i>保存设置
+    </button>
+  </div>
+
+  <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+    <div class="flex min-h-[500px]">
+      <!-- Left Tabs -->
+      <div class="w-48 border-r border-gray-200 bg-gray-50/50 flex-shrink-0">
+        <div class="settings-tab active flex items-center gap-3 px-4 py-3 text-sm text-gray-700 border-b border-gray-100" data-tab="basic">
+          <i class="fa-solid fa-sliders w-4 text-center text-blue-500"></i>
+          <span>基本设置</span>
+        </div>
+        <div class="settings-tab flex items-center gap-3 px-4 py-3 text-sm text-gray-700 border-b border-gray-100" data-tab="ai">
+          <i class="fa-solid fa-robot w-4 text-center text-purple-500"></i>
+          <span>AI 模型配置</span>
+        </div>
+        <div class="settings-tab flex items-center gap-3 px-4 py-3 text-sm text-gray-700 border-b border-gray-100" data-tab="users">
+          <i class="fa-solid fa-users w-4 text-center text-emerald-500"></i>
+          <span>用户管理</span>
+        </div>
+        <div class="settings-tab flex items-center gap-3 px-4 py-3 text-sm text-gray-700 border-b border-gray-100" data-tab="roles">
+          <i class="fa-solid fa-shield w-4 text-center text-yellow-500"></i>
+          <span>角色权限</span>
+        </div>
+        <div class="settings-tab flex items-center gap-3 px-4 py-3 text-sm text-gray-700 border-b border-gray-100" data-tab="notify">
+          <i class="fa-solid fa-bell w-4 text-center text-rose-500"></i>
+          <span>通知配置</span>
+        </div>
+        <div class="settings-tab flex items-center gap-3 px-4 py-3 text-sm text-gray-700" data-tab="audit">
+          <i class="fa-solid fa-clipboard-list w-4 text-center text-cyan-500"></i>
+          <span>操作日志</span>
+        </div>
+      </div>
+
+      <!-- Right Content -->
+      <div class="flex-1 p-6">
+        <!-- 基本设置 -->
+        <div class="tab-content" id="tab-basic">
+          <h3 class="text-base font-semibold text-gray-800 mb-5">基本设置</h3>
+          <div class="space-y-5 max-w-xl">
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1.5">系统名称</label>
+              <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" value="AI 合同审查系统">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1.5">系统 Logo URL</label>
+              <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="https://example.com/logo.png">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1.5">默认语言</label>
+              <select class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option>简体中文</option>
+                <option>English</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1.5">每页显示条数</label>
+              <select class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option>10</option>
+                <option selected>20</option>
+                <option>50</option>
+                <option>100</option>
+              </select>
+            </div>
+            <div class="flex items-center justify-between py-2 border-t border-gray-100 pt-4">
+              <div>
+                <p class="text-sm font-medium text-gray-700">自动审查新上传合同</p>
+                <p class="text-xs text-gray-400">上传后自动进入 AI 审查队列</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" checked class="sr-only peer">
+                <div class="w-10 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+              </label>
+            </div>
+            <div class="flex items-center justify-between py-2">
+              <div>
+                <p class="text-sm font-medium text-gray-700">审查结果邮件通知</p>
+                <p class="text-xs text-gray-400">审查完成后发送邮件通知上传人</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" class="sr-only peer">
+                <div class="w-10 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI 模型配置 -->
+        <div class="tab-content hidden" id="tab-ai">
+          <h3 class="text-base font-semibold text-gray-800 mb-5">AI 模型配置</h3>
+          <div class="space-y-5 max-w-xl">
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1.5">AI 模型选择</label>
+              <select class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option>GPT-4o</option>
+                <option>GPT-4o-mini</option>
+                <option>Claude 3.5 Sonnet</option>
+                <option>DeepSeek-V3</option>
+                <option>Qwen-Max</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1.5">API Key</label>
+              <input type="password" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" value="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1.5">API Base URL</label>
+              <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" value="https://api.openai.com/v1">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1.5">Temperature</label>
+                <input type="number" step="0.1" min="0" max="2" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" value="0.3">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1.5">Max Tokens</label>
+                <input type="number" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" value="4096">
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1.5">审查超时时间（秒）</label>
+              <input type="number" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" value="300">
+            </div>
+            <button class="px-4 py-2 border border-blue-300 text-blue-600 rounded-lg text-sm hover:bg-blue-50 transition flex items-center gap-2">
+              <i class="fa-solid fa-flask"></i>测试连接
+            </button>
+          </div>
+        </div>
+
+        <!-- 用户管理 -->
+        <div class="tab-content hidden" id="tab-users">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-base font-semibold text-gray-800">用户管理</h3>
+            <button class="px-3 py-1.5 bg-blue-500 text-white rounded-lg text-xs font-medium hover:bg-blue-600"><i class="fa-solid fa-plus mr-1"></i>新增用户</button>
+          </div>
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="bg-gray-50 text-left text-xs text-gray-500 uppercase tracking-wider">
+                <th class="px-3 py-2.5">用户名</th>
+                <th class="px-3 py-2.5">邮箱</th>
+                <th class="px-3 py-2.5">角色</th>
+                <th class="px-3 py-2.5">状态</th>
+                <th class="px-3 py-2.5">创建时间</th>
+                <th class="px-3 py-2.5 text-center">操作</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 text-gray-600">
+              <tr class="hover:bg-gray-50">
+                <td class="px-3 py-3 font-medium text-gray-800 flex items-center gap-2">
+                  <span class="w-7 h-7 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-semibold">管</span>管理员
+                </td>
+                <td class="px-3 py-3 text-xs">admin@contract.com</td>
+                <td class="px-3 py-3"><span class="bg-purple-50 text-purple-600 text-[10px] px-1.5 py-0.5 rounded">超级管理员</span></td>
+                <td class="px-3 py-3"><span class="text-green-500">●</span> 在线</td>
+                <td class="px-3 py-3 text-xs">2026-01-01</td>
+                <td class="px-3 py-3 text-center"><button class="text-blue-500 text-xs hover:text-blue-600">编辑</button></td>
+              </tr>
+              <tr class="hover:bg-gray-50">
+                <td class="px-3 py-3 font-medium text-gray-800 flex items-center gap-2">
+                  <span class="w-7 h-7 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs font-semibold">张</span>张经理
+                </td>
+                <td class="px-3 py-3 text-xs">zhang@contract.com</td>
+                <td class="px-3 py-3"><span class="bg-blue-50 text-blue-600 text-[10px] px-1.5 py-0.5 rounded">审查员</span></td>
+                <td class="px-3 py-3"><span class="text-green-500">●</span> 在线</td>
+                <td class="px-3 py-3 text-xs">2026-02-15</td>
+                <td class="px-3 py-3 text-center"><button class="text-blue-500 text-xs hover:text-blue-600">编辑</button></td>
+              </tr>
+              <tr class="hover:bg-gray-50">
+                <td class="px-3 py-3 font-medium text-gray-800 flex items-center gap-2">
+                  <span class="w-7 h-7 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center text-xs font-semibold">李</span>李法务
+                </td>
+                <td class="px-3 py-3 text-xs">li@contract.com</td>
+                <td class="px-3 py-3"><span class="bg-blue-50 text-blue-600 text-[10px] px-1.5 py-0.5 rounded">审查员</span></td>
+                <td class="px-3 py-3"><span class="text-gray-400">●</span> 离线</td>
+                <td class="px-3 py-3 text-xs">2026-03-01</td>
+                <td class="px-3 py-3 text-center"><button class="text-blue-500 text-xs hover:text-blue-600">编辑</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 角色权限 -->
+        <div class="tab-content hidden" id="tab-roles">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-base font-semibold text-gray-800">角色权限</h3>
+            <button class="px-3 py-1.5 bg-blue-500 text-white rounded-lg text-xs font-medium hover:bg-blue-600"><i class="fa-solid fa-plus mr-1"></i>新增角色</button>
+          </div>
+          <div class="space-y-3">
+            <div class="border border-gray-200 rounded-lg overflow-hidden">
+              <div class="flex items-center justify-between px-4 py-3 bg-gray-50 border-b border-gray-200">
+                <div class="flex items-center gap-3">
+                  <i class="fa-solid fa-crown text-yellow-500"></i>
+                  <span class="text-sm font-semibold text-gray-800">超级管理员</span>
+                </div>
+                <span class="text-[10px] text-gray-400">2 人</span>
+              </div>
+              <div class="px-4 py-3 text-sm text-gray-600">
+                <div class="flex flex-wrap gap-2">
+                  <span class="bg-blue-50 text-blue-600 text-xs px-2 py-0.5 rounded">合同管理</span>
+                  <span class="bg-blue-50 text-blue-600 text-xs px-2 py-0.5 rounded">规则管理</span>
+                  <span class="bg-blue-50 text-blue-600 text-xs px-2 py-0.5 rounded">库管理</span>
+                  <span class="bg-blue-50 text-blue-600 text-xs px-2 py-0.5 rounded">统计管理</span>
+                  <span class="bg-blue-50 text-blue-600 text-xs px-2 py-0.5 rounded">系统管理</span>
+                  <span class="bg-blue-50 text-blue-600 text-xs px-2 py-0.5 rounded">用户管理</span>
+                  <span class="bg-blue-50 text-blue-600 text-xs px-2 py-0.5 rounded">角色管理</span>
+                </div>
+              </div>
+            </div>
+            <div class="border border-gray-200 rounded-lg overflow-hidden">
+              <div class="flex items-center justify-between px-4 py-3 bg-gray-50 border-b border-gray-200">
+                <div class="flex items-center gap-3">
+                  <i class="fa-solid fa-user-tie text-blue-500"></i>
+                  <span class="text-sm font-semibold text-gray-800">审查员</span>
+                </div>
+                <span class="text-[10px] text-gray-400">5 人</span>
+              </div>
+              <div class="px-4 py-3 text-sm text-gray-600">
+                <div class="flex flex-wrap gap-2">
+                  <span class="bg-blue-50 text-blue-600 text-xs px-2 py-0.5 rounded">合同管理</span>
+                  <span class="bg-blue-50 text-blue-600 text-xs px-2 py-0.5 rounded">规则管理</span>
+                  <span class="bg-blue-50 text-blue-600 text-xs px-2 py-0.5 rounded">库管理</span>
+                  <span class="bg-blue-50 text-blue-600 text-xs px-2 py-0.5 rounded">统计管理</span>
+                  <span class="bg-gray-100 text-gray-400 text-xs px-2 py-0.5 rounded">系统管理</span>
+                  <span class="bg-gray-100 text-gray-400 text-xs px-2 py-0.5 rounded">用户管理</span>
+                  <span class="bg-gray-100 text-gray-400 text-xs px-2 py-0.5 rounded">角色管理</span>
+                </div>
+              </div>
+            </div>
+            <div class="border border-gray-200 rounded-lg overflow-hidden">
+              <div class="flex items-center justify-between px-4 py-3 bg-gray-50 border-b border-gray-200">
+                <div class="flex items-center gap-3">
+                  <i class="fa-solid fa-user text-gray-500"></i>
+                  <span class="text-sm font-semibold text-gray-800">普通用户</span>
+                </div>
+                <span class="text-[10px] text-gray-400">12 人</span>
+              </div>
+              <div class="px-4 py-3 text-sm text-gray-600">
+                <div class="flex flex-wrap gap-2">
+                  <span class="bg-blue-50 text-blue-600 text-xs px-2 py-0.5 rounded">合同管理</span>
+                  <span class="bg-gray-100 text-gray-400 text-xs px-2 py-0.5 rounded">规则管理</span>
+                  <span class="bg-gray-100 text-gray-400 text-xs px-2 py-0.5 rounded">库管理</span>
+                  <span class="bg-gray-100 text-gray-400 text-xs px-2 py-0.5 rounded">统计管理</span>
+                  <span class="bg-gray-100 text-gray-400 text-xs px-2 py-0.5 rounded">系统管理</span>
+                  <span class="bg-gray-100 text-gray-400 text-xs px-2 py-0.5 rounded">用户管理</span>
+                  <span class="bg-gray-100 text-gray-400 text-xs px-2 py-0.5 rounded">角色管理</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 通知配置 -->
+        <div class="tab-content hidden" id="tab-notify">
+          <h3 class="text-base font-semibold text-gray-800 mb-5">通知配置</h3>
+          <div class="space-y-4 max-w-xl">
+            <div class="flex items-center justify-between py-2">
+              <div>
+                <p class="text-sm font-medium text-gray-700">审查完成通知</p>
+                <p class="text-xs text-gray-400">合同审查完成后通知上传人</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" checked class="sr-only peer">
+                <div class="w-10 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+              </label>
+            </div>
+            <div class="flex items-center justify-between py-2">
+              <div>
+                <p class="text-sm font-medium text-gray-700">风险预警通知</p>
+                <p class="text-xs text-gray-400">发现高/中风险时推送给管理员</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" checked class="sr-only peer">
+                <div class="w-10 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+              </label>
+            </div>
+            <div class="flex items-center justify-between py-2">
+              <div>
+                <p class="text-sm font-medium text-gray-700">每日审查摘要</p>
+                <p class="text-xs text-gray-400">每天发送审查统计摘要邮件</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" class="sr-only peer">
+                <div class="w-10 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+              </label>
+            </div>
+            <div class="pt-4 border-t border-gray-100">
+              <label class="block text-sm font-medium text-gray-600 mb-1.5">SMTP 服务器</label>
+              <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" value="smtp.contract.com">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1.5">SMTP 端口</label>
+                <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" value="587">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1.5">发件人邮箱</label>
+                <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" value="noreply@contract.com">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 操作日志 -->
+        <div class="tab-content hidden" id="tab-audit">
+          <h3 class="text-base font-semibold text-gray-800 mb-4">操作日志</h3>
+          <div class="flex items-center gap-3 mb-4">
+            <div class="relative flex-1 max-w-sm">
+              <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+              <input type="text" placeholder="搜索操作日志..." class="w-full pl-8 pr-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <select class="border border-gray-300 rounded-lg px-2 py-1.5 text-xs text-gray-500">
+              <option>全部操作</option>
+              <option>上传合同</option>
+              <option>审查合同</option>
+              <option>修改规则</option>
+              <option>系统配置</option>
+            </select>
+            <button class="px-3 py-1.5 text-xs text-gray-500 border border-gray-300 rounded-lg hover:bg-gray-50"><i class="fa-regular fa-down-to-line mr-1"></i>导出</button>
+          </div>
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="bg-gray-50 text-left text-xs text-gray-500 uppercase tracking-wider">
+                <th class="px-3 py-2.5">操作时间</th>
+                <th class="px-3 py-2.5">操作用户</th>
+                <th class="px-3 py-2.5">操作类型</th>
+                <th class="px-3 py-2.5">操作内容</th>
+                <th class="px-3 py-2.5">IP 地址</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 text-gray-600">
+              <tr class="hover:bg-gray-50">
+                <td class="px-3 py-2.5 text-xs">2026-05-12 09:30:15</td>
+                <td class="px-3 py-2.5">管理员</td>
+                <td class="px-3 py-2.5"><span class="bg-blue-50 text-blue-600 text-[10px] px-1.5 py-0.5 rounded">上传合同</span></td>
+                <td class="px-3 py-2.5 text-xs">上传合同"设备采购框架协议"</td>
+                <td class="px-3 py-2.5 text-xs text-gray-400">192.168.1.100</td>
+              </tr>
+              <tr class="hover:bg-gray-50">
+                <td class="px-3 py-2.5 text-xs">2026-05-12 09:35:22</td>
+                <td class="px-3 py-2.5">张经理</td>
+                <td class="px-3 py-2.5"><span class="bg-green-50 text-green-600 text-[10px] px-1.5 py-0.5 rounded">审查合同</span></td>
+                <td class="px-3 py-2.5 text-xs">完成"IT运维服务合同"审查</td>
+                <td class="px-3 py-2.5 text-xs text-gray-400">192.168.1.102</td>
+              </tr>
+              <tr class="hover:bg-gray-50">
+                <td class="px-3 py-2.5 text-xs">2026-05-12 10:00:00</td>
+                <td class="px-3 py-2.5">管理员</td>
+                <td class="px-3 py-2.5"><span class="bg-yellow-50 text-yellow-600 text-[10px] px-1.5 py-0.5 rounded">修改规则</span></td>
+                <td class="px-3 py-2.5 text-xs">更新"风险条款识别"规则</td>
+                <td class="px-3 py-2.5 text-xs text-gray-400">192.168.1.100</td>
+              </tr>
+              <tr class="hover:bg-gray-50">
+                <td class="px-3 py-2.5 text-xs">2026-05-11 16:20:30</td>
+                <td class="px-3 py-2.5">管理员</td>
+                <td class="px-3 py-2.5"><span class="bg-purple-50 text-purple-600 text-[10px] px-1.5 py-0.5 rounded">系统配置</span></td>
+                <td class="px-3 py-2.5 text-xs">更新 AI 模型参数</td>
+                <td class="px-3 py-2.5 text-xs text-gray-400">192.168.1.100</td>
+              </tr>
+              <tr class="hover:bg-gray-50">
+                <td class="px-3 py-2.5 text-xs">2026-05-11 14:10:05</td>
+                <td class="px-3 py-2.5">李法务</td>
+                <td class="px-3 py-2.5"><span class="bg-blue-50 text-blue-600 text-[10px] px-1.5 py-0.5 rounded">上传合同</span></td>
+                <td class="px-3 py-2.5 text-xs">上传合同"保密协议-v3.pdf"</td>
+                <td class="px-3 py-2.5 text-xs text-gray-400">192.168.1.103</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
+            <p class="text-xs text-gray-400">共 128 条记录</p>
+            <div class="flex items-center gap-1">
+              <button class="px-2.5 py-1 text-xs border border-gray-300 rounded bg-white text-gray-500" disabled><i class="fa-solid fa-chevron-left"></i></button>
+              <button class="px-2.5 py-1 text-xs border border-blue-500 rounded bg-blue-50 text-blue-600 font-medium">1</button>
+              <button class="px-2.5 py-1 text-xs border border-gray-300 rounded bg-white text-gray-600">2</button>
+              <button class="px-2.5 py-1 text-xs border border-gray-300 rounded bg-white text-gray-600">3</button>
+              <button class="px-2.5 py-1 text-xs border border-gray-300 rounded bg-white text-gray-500"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const tabs = document.querySelectorAll('.settings-tab');
+    const contents = {
+      basic: document.getElementById('tab-basic'),
+      ai: document.getElementById('tab-ai'),
+      users: document.getElementById('tab-users'),
+      roles: document.getElementById('tab-roles'),
+      notify: document.getElementById('tab-notify'),
+      audit: document.getElementById('tab-audit')
+    };
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        Object.values(contents).forEach(c => c.classList.add('hidden'));
+        const id = tab.dataset.tab;
+        if (contents[id]) contents[id].classList.remove('hidden');
+      });
+    });
+  </script>
+</body>
+</html>

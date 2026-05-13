@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>审查报告查询</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body { font-family: 'Microsoft YaHei', -apple-system, sans-serif; }
+    .report-row { transition: background .15s; }
+    .report-row:hover { background: #f8faff; }
+    .checkbox-custom { width: 16px; height: 16px; border: 2px solid #d9d9d9; border-radius: 4px; cursor: pointer; transition: all .15s; display: inline-flex; align-items: center; justify-content: center; }
+    .checkbox-custom.checked { background: #1677ff; border-color: #1677ff; color: #fff; }
+  </style>
+</head>
+<body class="bg-gray-50 p-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-5">
+    <div>
+      <h2 class="text-lg font-semibold text-gray-800">审查报告查询</h2>
+      <p class="text-xs text-gray-500 mt-0.5">浏览、查看和导出 AI 审查报告</p>
+    </div>
+    <button id="batchExportBtn" disabled onclick="batchExport()" class="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 transition flex items-center gap-2 opacity-50 cursor-not-allowed">
+      <i class="fa-regular fa-file-zipper"></i>批量导出 (<span id="selectedCount">0</span>)
+    </button>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="grid grid-cols-4 gap-4 mb-5">
+    <div class="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-sm transition cursor-pointer">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-xs text-gray-500">审查报告总数</p>
+          <p class="text-2xl font-bold" style="color:#1677ff">1,280</p>
+        </div>
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center text-lg" style="background:#1677ff15;color:#1677ff"><i class="fa-regular fa-file-lines"></i></div>
+      </div>
+    </div>
+    <div class="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-sm transition cursor-pointer">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-xs text-gray-500">平均评分</p>
+          <p class="text-2xl font-bold" style="color:#52c41a">76.8</p>
+        </div>
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center text-lg" style="background:#52c41a15;color:#52c41a"><i class="fa-regular fa-chart-bar"></i></div>
+      </div>
+    </div>
+    <div class="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-sm transition cursor-pointer">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-xs text-gray-500">高风险报告</p>
+          <p class="text-2xl font-bold" style="color:#ff4d4f">43</p>
+        </div>
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center text-lg" style="background:#ff4d4f15;color:#ff4d4f"><i class="fa-regular fa-circle-exclamation"></i></div>
+      </div>
+    </div>
+    <div class="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-sm transition cursor-pointer">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-xs text-gray-500">已完成审查</p>
+          <p class="text-2xl font-bold" style="color:#722ed1">1,237</p>
+        </div>
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center text-lg" style="background:#722ed115;color:#722ed1"><i class="fa-regular fa-circle-check"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search Bar -->
+  <div class="bg-white rounded-lg border border-gray-200 p-4 mb-4">
+    <div class="flex items-center gap-3">
+      <div class="relative flex-1 max-w-xs">
+        <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+        <input type="text" placeholder="搜索合同名称..." class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" oninput="filterTable(this.value)">
+      </div>
+      <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <option>全部类型</option>
+        <option>采购合同</option>
+        <option>销售合同</option>
+        <option>服务合同</option>
+        <option>租赁合同</option>
+        <option>保密协议</option>
+        <option>其他</option>
+      </select>
+      <span class="text-xs text-gray-400 ml-auto">共 <strong id="totalCount">8</strong> 份报告</span>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+    <table class="w-full text-sm" id="reportTable">
+      <thead>
+        <tr class="bg-gray-50 text-xs text-gray-500 uppercase tracking-wider">
+          <th class="text-left py-3 px-4 w-10">
+            <div class="checkbox-custom" id="selectAllCheck" onclick="toggleSelectAll()">
+              <i class="fa-solid fa-check text-[10px] hidden"></i>
+            </div>
+          </th>
+          <th class="text-left py-3 px-3 font-medium">合同名称</th>
+          <th class="text-left py-3 px-3 font-medium">类型</th>
+          <th class="text-left py-3 px-3 font-medium">评分</th>
+          <th class="text-left py-3 px-3 font-medium">问题数</th>
+          <th class="text-left py-3 px-3 font-medium">审查人</th>
+          <th class="text-left py-3 px-3 font-medium">审查时间</th>
+          <th class="text-left py-3 px-3 font-medium">状态</th>
+          <th class="text-left py-3 px-3 font-medium">操作</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody" class="divide-y divide-gray-50">
+        <!-- rows rendered by JS -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const mockData = [
+      { id: 'h-1', name: 'IT运维服务合同', type: '服务合同', score: 78.5, issues: 5, reviewer: 'AI审查系统', time: '2026-05-11 10:08', status: 'completed' },
+      { id: 'h-2', name: '设备采购框架协议', type: '采购合同', score: 62.0, issues: 8, reviewer: 'AI审查系统', time: '2026-05-10 15:20', status: 'completed' },
+      { id: 'h-3', name: '办公楼租赁协议', type: '租赁合同', score: 85.0, issues: 3, reviewer: 'AI审查系统', time: '2026-05-09 11:45', status: 'completed' },
+      { id: 'h-4', name: '软件许可使用协议', type: '采购合同', score: 92.5, issues: 1, reviewer: 'AI审查系统', time: '2026-05-08 17:30', status: 'completed' },
+      { id: 'h-5', name: '市场推广服务合同', type: '服务合同', score: 71.0, issues: 4, reviewer: 'AI审查系统', time: '2026-05-07 14:00', status: 'completed' },
+      { id: 'h-6', name: '供应链金融合作协议', type: '其他', score: 55.0, issues: 12, reviewer: 'AI审查系统', time: '2026-05-06 09:15', status: 'completed' },
+      { id: 'h-7', name: '软件开发外包合同', type: '服务合同', score: 81.5, issues: 2, reviewer: 'AI审查系统', time: '2026-05-05 16:40', status: 'completed' },
+      { id: 'h-8', name: '专利许可协议', type: '其他', score: 68.0, issues: 6, reviewer: 'AI审查系统', time: '2026-05-04 11:00', status: 'completed' },
+    ];
+
+    let selectedIds = new Set();
+
+    function scoreColor(s) {
+      if (s >= 80) return '#52c41a';
+      if (s >= 60) return '#faad14';
+      return '#ff4d4f';
+    }
+
+    function statusBadge(s) {
+      if (s === 'completed') return '<span class="text-[10px] bg-green-50 text-green-600 px-2 py-0.5 rounded-full">已完成</span>';
+      if (s === 'reviewing') return '<span class="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">审查中</span>';
+      return '<span class="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">待审查</span>';
+    }
+
+    function renderRows(data) {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = data.map(r => {
+        const checked = selectedIds.has(r.id);
+        return `<tr class="report-row ${checked ? 'bg-blue-50' : ''}">
+          <td class="py-3 px-4">
+            <div class="checkbox-custom ${checked ? 'checked' : ''}" onclick="toggleRow('${r.id}')">
+              ${checked ? '<i class="fa-solid fa-check text-[10px]"></i>' : ''}
+            </div>
+          </td>
+          <td class="py-3 px-3 font-medium text-gray-800">${r.name}</td>
+          <td class="py-3 px-3"><span class="text-xs bg-gray-100 px-2 py-0.5 rounded">${r.type}</span></td>
+          <td class="py-3 px-3"><span class="text-xs px-2 py-0.5 rounded font-semibold" style="background:${scoreColor(r.score)}15;color:${scoreColor(r.score)}">${r.score}</span></td>
+          <td class="py-3 px-3 text-gray-600">${r.issues}</td>
+          <td class="py-3 px-3 text-xs text-gray-400">${r.reviewer}</td>
+          <td class="py-3 px-3 text-xs text-gray-400">${r.time}</td>
+          <td class="py-3 px-3">${statusBadge(r.status)}</td>
+          <td class="py-3 px-3">
+            <div class="flex items-center gap-1">
+              <button onclick="parent.location.href='review-opinion.html'" class="text-xs text-blue-500 hover:text-blue-600 px-2 py-1 rounded hover:bg-blue-50 transition"><i class="fa-regular fa-eye mr-1"></i>查看</button>
+              <button onclick="alert('报告导出成功')" class="text-xs text-gray-500 hover:text-blue-500 px-2 py-1 rounded hover:bg-blue-50 transition"><i class="fa-regular fa-download mr-1"></i>导出</button>
+            </div>
+          </td>
+        </tr>`;
+      }).join('');
+      document.getElementById('totalCount').textContent = data.length;
+    }
+
+    function toggleRow(id) {
+      if (selectedIds.has(id)) selectedIds.delete(id);
+      else selectedIds.add(id);
+      updateUI();
+    }
+
+    function toggleSelectAll() {
+      const allIds = mockData.map(r => r.id);
+      if (selectedIds.size === mockData.length) selectedIds = new Set();
+      else selectedIds = new Set(allIds);
+      updateUI();
+    }
+
+    function updateUI() {
+      renderRows(mockData);
+      const count = selectedIds.size;
+      document.getElementById('selectedCount').textContent = count;
+      const btn = document.getElementById('batchExportBtn');
+      if (count > 0) {
+        btn.disabled = false;
+        btn.className = 'px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 transition flex items-center gap-2';
+      } else {
+        btn.disabled = true;
+        btn.className = 'px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 transition flex items-center gap-2 opacity-50 cursor-not-allowed';
+      }
+      const selectAll = document.getElementById('selectAllCheck');
+      if (selectedIds.size === mockData.length) {
+        selectAll.classList.add('checked');
+        selectAll.innerHTML = '<i class="fa-solid fa-check text-[10px]"></i>';
+      } else {
+        selectAll.classList.remove('checked');
+        selectAll.innerHTML = '';
+      }
+    }
+
+    function filterTable(query) {
+      const q = query.toLowerCase();
+      const filtered = mockData.filter(r => r.name.toLowerCase().includes(q) || r.type.includes(q));
+      renderRows(filtered);
+    }
+
+    function batchExport() {
+      if (selectedIds.size === 0) return;
+      alert('已导出 ' + selectedIds.size + ' 份审查报告');
+      selectedIds = new Set();
+      updateUI();
+    }
+
+    renderRows(mockData);
+  </script>
+</body>
+</html>
