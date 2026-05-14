@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI合同审查系统</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Microsoft YaHei', -apple-system, sans-serif; }
+    .sidebar { width: 240px; min-height: 100vh; transition: width .25s ease; }
+    .sidebar.collapsed { width: 64px; }
+    .sidebar.collapsed .nav-label { display: none; }
+    .sidebar.collapsed .nav-item span { display: none; }
+    .sidebar.collapsed .nav-item { justify-content: center; padding: 10px 0; }
+    .sidebar.collapsed .nav-item i.w-4 { margin: 0; }
+    .sidebar.collapsed .logo-text { display: none; }
+    .sidebar.collapsed .user-info { display: none; }
+    .sidebar.collapsed .sidebar-toggle i { transform: rotate(180deg); }
+    .nav-item { cursor: pointer; transition: all .2s; font-size: 15px; }
+    .nav-item:hover { background: rgba(255,255,255,.08); }
+    .nav-item.active { background: rgba(255,255,255,.12); border-left: 3px solid #60a5fa; }
+    .sidebar.collapsed .nav-item.active { border-left: none; border-bottom: 2px solid #60a5fa; border-radius: 0; }
+    .nav-label { font-size: 12px; letter-spacing: 1px; white-space: nowrap; overflow: hidden; }
+    .main-area { flex: 1; min-height: 100vh; transition: margin-left .25s ease; }
+    .main-area iframe { width: 100%; height: calc(100vh - 56px); border: none; }
+    .logo-icon { width: 36px; height: 36px; flex-shrink: 0; }
+    .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: #3b82f6; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; font-weight: 600; flex-shrink: 0; }
+    .sidebar-toggle { cursor: pointer; transition: all .2s; }
+    .sidebar-toggle:hover { background: rgba(255,255,255,.1); }
+  </style>
+</head>
+<body>
+  <div id="app" class="flex">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar bg-slate-900 text-white flex flex-col">
+      <!-- Logo -->
+      <div class="flex items-center gap-3 px-4 py-4 border-b border-slate-700">
+        <div class="logo-icon bg-blue-500 rounded-lg flex items-center justify-center text-white text-lg">
+          <i class="fa-solid fa-file-signature"></i>
+        </div>
+        <div class="logo-text overflow-hidden">
+          <h1 class="text-base font-bold whitespace-nowrap">合同审查系统</h1>
+          <p class="text-xs text-slate-400">AI Contract Review</p>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="flex-1 overflow-y-auto py-3 px-2 space-y-1">
+        <p class="nav-label text-slate-500 uppercase px-3 pt-1 pb-1">概览</p>
+        <div class="nav-item active flex items-center gap-3 px-3 py-2.5 rounded" data-page="dashboard">
+          <i class="fa-solid fa-house w-4 text-center text-sky-400"></i>
+          <span class="whitespace-nowrap">工作台</span>
+        </div>
+
+        <p class="nav-label text-slate-500 uppercase px-3 pt-3 pb-1">合同管理</p>
+        <div class="nav-item flex items-center gap-3 px-3 py-2.5 rounded" data-page="contract-list">
+          <i class="fa-solid fa-file-lines w-4 text-center text-blue-400"></i>
+          <span class="whitespace-nowrap">合同列表</span>
+        </div>
+        <div class="nav-item flex items-center gap-3 px-3 py-2.5 rounded" data-page="contract-types">
+          <i class="fa-solid fa-tags w-4 text-center text-blue-400"></i>
+          <span class="whitespace-nowrap">合同类型</span>
+        </div>
+
+        <p class="nav-label text-slate-500 uppercase px-3 pt-3 pb-1">规则管理</p>
+        <div class="nav-item flex items-center gap-3 px-3 py-2.5 rounded" data-page="rule-scoring">
+          <i class="fa-solid fa-star w-4 text-center text-yellow-400"></i>
+          <span class="whitespace-nowrap">评分规则</span>
+        </div>
+        <div class="nav-item flex items-center gap-3 px-3 py-2.5 rounded" data-page="rule-review">
+          <i class="fa-solid fa-scale-balanced w-4 text-center text-yellow-400"></i>
+          <span class="whitespace-nowrap">审查规则</span>
+        </div>
+
+        <p class="nav-label text-slate-500 uppercase px-3 pt-3 pb-1">库管理</p>
+        <div class="nav-item flex items-center gap-3 px-3 py-2.5 rounded" data-page="knowledge-base">
+          <i class="fa-solid fa-book w-4 text-center text-emerald-400"></i>
+          <span class="whitespace-nowrap">审查知识库</span>
+        </div>
+        <div class="nav-item flex items-center gap-3 px-3 py-2.5 rounded" data-page="reference-base">
+          <i class="fa-solid fa-books w-4 text-center text-emerald-400"></i>
+          <span class="whitespace-nowrap">参考知识库</span>
+        </div>
+
+        <p class="nav-label text-slate-500 uppercase px-3 pt-3 pb-1">统计管理</p>
+        <div class="nav-item flex items-center gap-3 px-3 py-2.5 rounded" data-page="history">
+          <i class="fa-solid fa-clock-rotate-left w-4 text-center text-purple-400"></i>
+          <span class="whitespace-nowrap">历史记录</span>
+        </div>
+        <div class="nav-item flex items-center gap-3 px-3 py-2.5 rounded" data-page="review-stats">
+          <i class="fa-solid fa-file-lines w-4 text-center text-purple-400"></i>
+          <span class="whitespace-nowrap">审查报告查询</span>
+        </div>
+
+        <p class="nav-label text-slate-500 uppercase px-3 pt-3 pb-1">系统管理</p>
+        <div class="nav-item flex items-center gap-3 px-3 py-2.5 rounded" data-page="system-settings">
+          <i class="fa-solid fa-gear w-4 text-center text-slate-400"></i>
+          <span class="whitespace-nowrap">系统设置</span>
+        </div>
+      </nav>
+
+      <!-- Bottom: User + Toggle -->
+      <div class="border-t border-slate-700">
+        <div class="flex items-center gap-3 px-4 py-3">
+          <div class="user-avatar">管</div>
+          <div class="user-info text-sm overflow-hidden">
+            <p class="text-slate-200 whitespace-nowrap">管理员</p>
+            <p class="text-xs text-slate-500">admin@contract.com</p>
+          </div>
+        </div>
+        <div class="sidebar-toggle flex items-center justify-center py-2 text-slate-500 hover:text-slate-300" onclick="toggleSidebar()">
+          <i class="fa-solid fa-chevron-left text-sm transition-transform duration-200"></i>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-area flex flex-col bg-gray-50">
+      <!-- Top Bar -->
+      <header class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between" style="min-height:56px">
+        <div class="flex items-center gap-4">
+          <h2 class="text-base font-semibold text-gray-700" id="pageTitle">首页 / 工作台</h2>
+        </div>
+        <div class="flex items-center gap-4 text-gray-500">
+          <i class="fa-regular fa-bell text-lg cursor-pointer hover:text-blue-500"></i>
+          <div class="relative group">
+            <div class="flex items-center gap-2 cursor-pointer hover:text-blue-500 px-2 py-1 rounded hover:bg-gray-50 transition">
+              <div class="w-7 h-7 rounded-md bg-blue-50 flex items-center justify-center text-blue-500 text-sm">
+                <i class="fa-regular fa-user"></i>
+              </div>
+              <span class="text-sm text-gray-700">管理员</span>
+              <i class="fa-solid fa-chevron-down text-xs"></i>
+            </div>
+            <div class="absolute right-0 top-full mt-1 w-40 bg-white rounded-lg shadow-lg border border-gray-200 py-1 hidden group-hover:block z-50">
+              <div class="px-4 py-2 text-xs text-gray-400 border-b border-gray-100">管理员</div>
+              <a href="login.html" class="flex items-center gap-2 px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>退出登录
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+      <!-- Iframe -->
+      <iframe id="mainFrame" src="dashboard.html"></iframe>
+    </div>
+  </div>
+
+  <script>
+    const pages = [
+      { key: 'dashboard', title: '首页 / 工作台' },
+      { key: 'contract-list', title: '合同列表' },
+      { key: 'contract-types', title: '合同类型' },
+      { key: 'rule-scoring', title: '评分规则' },
+      { key: 'rule-review', title: '审查规则' },
+      { key: 'knowledge-base', title: '审查知识库' },
+      { key: 'reference-base', title: '参考知识库' },
+      { key: 'history', title: '历史记录' },
+      { key: 'review-stats', title: '审查报告查询' },
+      { key: 'system-settings', title: '系统设置' }
+    ];
+
+    const navItems = document.querySelectorAll('.nav-item');
+    const mainFrame = document.getElementById('mainFrame');
+    const pageTitle = document.getElementById('pageTitle');
+
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        navItems.forEach(n => n.classList.remove('active'));
+        item.classList.add('active');
+        const page = item.dataset.page;
+        const info = pages.find(p => p.key === page);
+        if (info) pageTitle.textContent = info.title;
+        mainFrame.src = page + '.html';
+      });
+    });
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('collapsed');
+    }
+  </script>
+</body>
+</html>
